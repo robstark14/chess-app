@@ -1,0 +1,99 @@
+/* font-family: 'Bad Script', cursive; 
+font-family: 'Comic Neue', cursive;
+font-family: 'Handlee', cursive;
+*/
+@import url("https://fonts.googleapis.com/css2?family=Bad+Script&family=Comic+Neue:ital,wght@1,300&family=Handlee&display=swap");
+
+*,
+::after,
+::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  --font-title: "Bad Script", cursive;
+  --font-color1: #001800;
+  --font-color2: #838383;
+  --font-p: "Handlee", cursive;
+  --color-beige: #fbfbf0;
+  --color-gray: #f6f6f6;
+  --color-drk-beige: #e4e4a1;
+  box-sizing: border-box;
+  --transition: all 0.3s linear;
+}
+
+body {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: black;
+}
+header h1 {
+  color: black;
+  font-family: var(--font-p);
+  text-align: center;
+  height: 5vmin;
+  width: 100%;
+  font-size: 5vmin;
+  padding-bottom: 3vmin;
+}
+
+#chessboard-container {
+  width: 80vmin;
+  height: 80vmin;
+  border: 1vmin groove black;
+}
+.row-A {
+  height: 12.5%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+}
+.row-B {
+  height: 12.5%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+}
+.white {
+  color: var(--color-beige);
+}
+.box {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+.box:hover {
+  cursor: pointer;
+}
+
+.row-A > .box:nth-child(odd) {
+  background-image: url(./public/images/ligh.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.row-A > .box:nth-child(even) {
+  background-image: url(./public/images/dark.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.row-B > .box:nth-child(even) {
+  background-image: url(./public/images/ligh.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.row-B > .box:nth-child(odd) {
+  background-image: url(./public/images/dark.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+img {
+  height: 6vmin;
+}
+img:hover {
+  cursor: pointer;
+}

@@ -1,0 +1,19 @@
+{
+  "name": "chess-app",
+  "version": "1.0.0",
+  "description": "Chess-app Project for Avion school utilizing ES6 Classes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robstark14/chess-app.git"
+  },
+  "author": "Rob and Jirreh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/robstark14/chess-app/issues"
+  },
+  "homepage": "https://github.com/robstark14/chess-app#readme"
+}
