@@ -80,8 +80,9 @@ class Move {
 							if (item.hasChildNodes() === false && row === rowPossible - i && col === colPossible) {
 								item.classList.toggle('valid-move');
 								item.onclick = () => {
-									item.innerHTML = `<img class="b-pawn" id="bp1" src="./images/bp.png" alt="black pawn" />`;
-									pieceID.parentNode.removeChild(pieceID);
+									// item.innerHTML = `<img class="b-pawn" id="bp1" src="./images/bp.png" alt="black pawn" />`;
+									item.append(pieceID);
+									// pieceID.parentNode.removeChild(pieceID);
 									Array.from(squares).forEach((square) => {
 										if (square.classList.contains('valid-move')) {
 											square.classList.remove('valid-move');
