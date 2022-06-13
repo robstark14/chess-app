@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Chessboard with Grid</title>
+    <title>Chess</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
       rel="stylesheet"
@@ -12,61 +12,77 @@
       href="../styles.css"
     />
   </head>
+
   <body>
     <header>
-      <h1>Chessboard with Grid</h1>
+      <h1>Chess</h1>
     </header>
     <div id="chessboard-container">
       <div class="row-A">
         <div id="A8" class="box">
-          <img class="black" src="./images/br.png" alt="black rbr.png" />
+          <img
+            class="b-rook"
+            id="br1"
+            src="./images/br.png"
+            alt="black rbr.png"
+          />
         </div>
         <div id="B8" class="box">
-          <img class="black" src="./images/bh.png" alt="black knight" />
+          <img src="./images/bh.png" alt="black knight" />
         </div>
         <div id="C8" class="box">
-          <img class="black" src="./images/bb.png" alt="black bishop" />
+          <img src="./images/bb.png" alt="black bishop" />
         </div>
         <div id="D8" class="box">
-          <img class="black" src="./images/bk.png" alt="black king" />
+          <img class="b-king" id="bk" src="./images/bk.png" alt="black king" />
         </div>
         <div id="E8" class="box">
-          <img class="black" src="./images/bq.png" alt="black queen" />
+          <img
+            class="b-queen"
+            id="bq"
+            src="./images/bq.png"
+            alt="black queen"
+          />
         </div>
         <div id="F8" class="box">
-          <img class="black" src="./images/bb.png" alt="black-bishop" />
+          <img src="./images/bb.png" alt="black-bishop" />
         </div>
         <div id="G8" class="box">
-          <img class="black" src="./images/bh.png" alt="black knight" />
+          <img src="./images/bh.png" alt="black knight" />
         </div>
         <div id="H8" class="box">
-          <img class="black" src="./images/br.png" alt="black rook.png" />
+          <img
+            class="b-rook"
+            id="br2"
+            src="./images/br.png"
+            alt="black rook.png"
+          />
         </div>
       </div>
       <div class="row-B">
         <div id="A7" class="box">
-          <img class="black" src="./images/bp.png" alt="black pawn" />
+          <img class="b-pawn" id="bp1" src="./images/bp.png" alt="black pawn" />
         </div>
         <div id="B7" class="box">
-          <img class="black" src="./images/bp.png" alt="black pawn" />
+          <img class="b-pawn" id="bp2" src="./images/bp.png" alt="black pawn" />
         </div>
         <div id="C7" class="box">
-          <img class="black" src="./images/bp.png" alt="black pawn" />
+          <img class="b-pawn" id="bp3" src="./images/bp.png" alt="black pawn" />
         </div>
         <div id="D7" class="box">
-          <img class="black" src="./images/bp.png" alt="black pawn" />
+          <img class="b-pawn" id="bp4" src="./images/bp.png" alt="black pawn" />
         </div>
         <div id="E7" class="box">
-          <img class="black" src="./images/bp.png" alt="black pawn" />
+          <img class="b-pawn" id="bp5" src="./images/bp.png" alt="black pawn" />
         </div>
         <div id="F7" class="box">
-          <img class="black" src="./images/bp.png" alt="black pawn" />
+          <img class="b-pawn" id="bp6" src="./images/bp.png" alt="black pawn" />
         </div>
         <div id="G7" class="box">
-          <img class="black" src="./images/bp.png" alt="black pawn" />
+          <img class="b-pawn" id="bp7" src="./images/bp.png" alt="black pawn" />
         </div>
         <div id="H7" class="box">
-          <img class="black" src="./images/bp.png" alt="black pawn" />
+          <img class="b-pawn" id="bp8" src="./images/bp.png" alt="black pawn" />
         </div>
       </div>
       <div class="row-A">
@@ -110,27 +126,29 @@
         <div id="H3" class="box"></div>
       </div>
       <div class="row-A white">
-        <div id="A2" class="box"></div>
+        <div id="A2" class="box">
+          <img class="w-pawn" id="wp1" src="./images/wp.png" alt="white pawn" />
+        </div>
         <div id="B2" class="box">
-          <img class="w-pawn" src="./images/wp.png" alt="white pawn" />
+          <img class="w-pawn" id="wp2" src="./images/wp.png" alt="white pawn" />
         </div>
         <div id="C2" class="box">
-          <img class="w-pawn" src="./images/wp.png" alt="white pawn" />
+          <img class="w-pawn" id="wp3" src="./images/wp.png" alt="white pawn" />
         </div>
         <div id="D2" class="box">
-          <img class="w-pawn" src="./images/wp.png" alt="white pawn" />
+          <img class="w-pawn" id="wp4" src="./images/wp.png" alt="white pawn" />
         </div>
         <div id="E2" class="box">
-          <img class="w-pawn" src="./images/wp.png" alt="white pawn" />
+          <img class="w-pawn" id="wp5" src="./images/wp.png" alt="white pawn" />
         </div>
         <div id="F2" class="box">
-          <img class="w-pawn" src="./images/wp.png" alt="white pawn" />
+          <img class="w-pawn" id="wp6" src="./images/wp.png" alt="white pawn" />
         </div>
         <div id="G2" class="box">
-          <img class="w-pawn" src="./images/wp.png" alt="white pawn" />
+          <img class="w-pawn" id="wp7" src="./images/wp.png" alt="white pawn" />
         </div>
         <div id="H2" class="box">
-          <img class="w-pawn" src="./images/wp.png" alt="white pawn" />
+          <img class="w-pawn" id="wp8" src="./images/wp.png" alt="white pawn" />
         </div>
       </div>
       <div class="row-B white">
@@ -143,11 +161,16 @@
         <div id="C1" class="box">
           <img src="./images/wb.png" alt="white bishop" />
         </div>
-        <div id="E1" class="box">
-          <img src="./images/wk.png" alt="white king" />
-        </div>
         <div id="D1" class="box">
-          <img src="./images/wq.png" alt="white queen" />
+          <img class="w-king" id="wk" src="./images/wk.png" alt="white king" />
+        </div>
+        <div id="E1" class="box">
+          <img
+            class="w-queen"
+            id="wq"
+            src="./images/wq.png"
+            alt="white queen"
+          />
         </div>
         <div id="F1" class="box">
           <img src="./images/wb.png" alt="white bishop" />
@@ -156,7 +179,12 @@
           <img src="./images/wh.png" alt="white horse" />
         </div>
         <div id="H1" class="box">
-          <img class="w-rook" src="./images/wr.png" alt="white rook.png" />
+          <img
+            class="w-rook"
+            id="wr2"
+            src="./images/wr.png"
+            alt="white rook.png"
+          />
         </div>
       </div>
     </div>
