@@ -11,8 +11,10 @@ Array.from(squares).forEach((item) => {
 // };
 class Move {
   constructor(id) {
-    this.id = id;
-    this.turn = "white";
+    (this.id = id),
+      (this.currentPieceLocation = currentPieceLocation),
+      (this.rowPossible = rowPossible),
+      (this.colPossible = colPossible);
   }
 
   changeTurn() {
@@ -21,51 +23,50 @@ class Move {
   }
 
   getWhitePossibleMoves() {
-    this.turn = "white";
-    const squares = document.querySelectorAll(".box");
+    // const squares = document.querySelectorAll(".box");
 
     let pieceID = document.getElementById(this.id);
-
+    const pawn = new Pawn(
+      // e.currentTarget.id,
+      "white",
+      this.rowPossible,
+      this.colPossible
+    );
     pieceID.onclick = (e) => {
-      if (this.turn === "white") {
-        const currentPieceLocation = e.currentTarget.parentNode.id;
-        let rowPossible = parseInt(currentPieceLocation[1]); //get the id number of the possible move
-        let colPossible = currentPieceLocation[0]; //get the id letter of the possible move
-        e.currentTarget.classList.remove("valid-move");
-        ////////////// //white pawn
-        const pawn = new Pawn(
-          e.currentTarget.id,
-          "white",
-          this.rowPossible,
-          this.colPossible
-        );
-        pawn.getMove(this.rowPossible, this.colPossible);
+      // if (this.turn === "white") {
 
-        /////////////////  white rook
-        const rook = new Rook(
-          e.currentTarget.id,
-          "white",
-          this.rowPossible,
-          this.colPossible
-        );
-        rook.getMove(this.rowPossible, this.colPossible);
-        //////////////// white king
-        const king = new King(
-          e.currentTarget.id,
-          "white",
-          this.rowPossible,
-          this.colPossible
-        );
-        king.getMove(this.rowPossible, this.colPossible);
-        //////////////// white queen
-        const queen = new Queen(
-          e.currentTarget.id,
-          "white",
-          this.rowPossible,
-          this.colPossible
-        );
-        queen.getMove(this.rowPossible, this.colPossible);
-      }
+      pawn.getMove();
+      currentPieceLocation = e.currentTarget.parentNode.id;
+      rowPossible = parseInt(currentPieceLocation[1]); //get the id number of the possible move
+      colPossible = currentPieceLocation[0]; //get the id letter of the possible move
+      e.currentTarget.classList.remove("valid-move");
+      ////////////// //white pawn
+
+      /////////////////  white rook
+      const rook = new Rook(
+        e.currentTarget.id,
+        "white",
+        this.rowPossible,
+        this.colPossible
+      );
+      rook.getMove(this.rowPossible, this.colPossible);
+      //////////////// white king
+      const king = new King(
+        e.currentTarget.id,
+        "white",
+        this.rowPossible,
+        this.colPossible
+      );
+      king.getMove(this.rowPossible, this.colPossible);
+      //////////////// white queen
+      const queen = new Queen(
+        e.currentTarget.id,
+        "white",
+        this.rowPossible,
+        this.colPossible
+      );
+      queen.getMove(e.currentTarget.id);
+      // }
     };
   }
 
@@ -236,11 +237,12 @@ class Move {
   }
 }
 class Pawn {
-  constructor(id, color, row, col) {
-    this.id = id;
+  constructor(color, row, col) {
+    // this.id = id;
     this.color = color;
     this.row = row;
     this.col = col;
+    // this.pieceID = pieceID;
   }
   getMove(row, col) {
     // const piece = new Move(this.id);
@@ -248,6 +250,10 @@ class Pawn {
     // piece.getWhitePossibleMoves();
     //white pawn
     // if (e.currentTarget.className === "w-pawn" && this.turn === "white") {
+    // pieceID = document.getElementById(this.id);
+    // this.pieceID.onclick = (e) => {
+    // color = 'white';
+    const squares = document.querySelectorAll(".box");
     Array.from(squares).filter((item) => {
       const possibleMove = item.id.split("");
       let c = possibleMove[0];
@@ -278,6 +284,7 @@ class Pawn {
       }
     });
     // }
+    // };
   }
 }
 class Rook extends Pawn {
@@ -391,51 +398,55 @@ class Bishop extends Pawn {
 class Queen extends Pawn {
   constructor() {
     super(id, color, row, col);
+    this.pieceID = pieceID;
   }
-  getMove() {
-    // const piece = new Move(this.id);
-    // piece.getBlackPossibleMoves();
-    // piece.getWhitePossibleMoves();
-    if (e.currentTarget.className === "w-queen" && this.turn === "white") {
-      Array.from(squares).filter((item) => {
-        const possibleMove = item.id.split("");
-        let col = possibleMove[0];
-        let row = parseInt(possibleMove[1]);
+  getMove(pieceID) {
+    pieceID.onclick = () => {
+      console.log(this.turn);
+      // const piece = new Move(this.id);
+      // piece.getBlackPossibleMoves();
+      // piece.getWhitePossibleMoves();
+      if (this.turn === "white") {
+        Array.from(squares).filter((item) => {
+          const possibleMove = item.id.split("");
+          let col = possibleMove[0];
+          let row = parseInt(possibleMove[1]);
 
-        let adjacentPiece = document.getElementById(
-          colPossible + (rowPossible + 1).toString()
-        );
+          let adjacentPiece = document.getElementById(
+            colPossible + (rowPossible + 1).toString()
+          );
 
-        // if (!adjacentPiece.hasChildNodes()) {
-        for (let i = 0; i < 9; i++) {
-          if (
-            item.hasChildNodes() === false &&
-            row === rowPossible + i &&
-            col === colPossible
-          ) {
-            item.classList.toggle("valid-move");
-            item.onclick = () => {
-              // item.innerHTML = `<img class="b-king" id="bk" src="./images/bk.png" alt="black pawn" />`;
-              // pieceID.parentNode.removeChild(pieceID);
+          // if (!adjacentPiece.hasChildNodes()) {
+          for (let i = 0; i < 9; i++) {
+            if (
+              item.hasChildNodes() === false &&
+              row === rowPossible + i &&
+              col === colPossible
+            ) {
+              item.classList.toggle("valid-move");
+              item.onclick = () => {
+                // item.innerHTML = `<img class="b-king" id="bk" src="./images/bk.png" alt="black pawn" />`;
+                // pieceID.parentNode.removeChild(pieceID);
 
-              Array.from(squares).forEach((square) => {
-                if (square.classList.contains("valid-move")) {
-                  square.classList.remove("valid-move");
-                  item.append(pieceID);
-                  this.changeTurn();
-                  // renderPieces();
-                  // this.turn === "black";
-                }
-              });
-              this.changeTurn();
-            };
-            if (!e.currentTarget.parentNode.hasChildNodes()) {
+                Array.from(squares).forEach((square) => {
+                  if (square.classList.contains("valid-move")) {
+                    square.classList.remove("valid-move");
+                    item.append(pieceID);
+                    this.changeTurn();
+                    // renderPieces();
+                    // this.turn === "black";
+                  }
+                });
+                this.changeTurn();
+              };
+              if (!e.currentTarget.parentNode.hasChildNodes()) {
+              }
             }
           }
-        }
-        // }
-      });
-    }
+          // }
+        });
+      }
+    };
   }
 }
 class King extends Pawn {
@@ -493,6 +504,7 @@ class King extends Pawn {
 class Game {
   constructor() {
     this.newGame();
+    this.turn = "white";
   }
   newGame() {
     const p1 = new Move("bp1");
