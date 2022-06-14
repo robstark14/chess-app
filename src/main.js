@@ -46,15 +46,11 @@ class Move {
         this.colPossible
       );
       whitePawn.getMove(this.rowPossible, this.colPossible);
-      this.turn = "black";
-
-      console.log(this.turn);
     };
     // }
     ///////////////  white rook
     const rook = new Rook(
       e.currentTarget.id,
-      "white",
       this.rowPossible,
       this.colPossible
     );
@@ -104,14 +100,11 @@ class Move {
 
       // } else {
       blackPawn.getMove(this.rowPossible, this.colPossible);
-      this.turn = "white";
-      console.log(this.turn);
 
       // }
       ///////////////  white rook
       const rook = new Rook(
         e.currentTarget.id,
-
         this.rowPossible,
         this.colPossible
       );
@@ -311,9 +304,9 @@ class Pawn {
     this.turn;
     // this.pieceID = pieceID;
   }
-  changeTurn() {
-    this.turn = this.turn === "black" ? "white" : "black";
-  }
+  // changeTurn() {
+  //   this.turn = this.turn === "black" ? "white" : "black";
+  // }
 
   getMove(row, col) {
     let pieceID = document.getElementById(this.id);
@@ -343,7 +336,7 @@ class Pawn {
                 item.append(pieceID);
               }
             });
-            this.changeTurn();
+            game.changeTurn();
             console.log(this.turn);
           };
         }
@@ -363,7 +356,7 @@ class Pawn {
                 item.append(pieceID);
               }
             });
-            this.changeTurn();
+            game.changeTurn();
           };
         }
       }
@@ -371,7 +364,7 @@ class Pawn {
   }
 }
 class Rook extends Pawn {
-  constructor() {
+  constructor(id, row, col) {
     super(id, row, col);
   }
   getMove(row, col) {
@@ -562,6 +555,8 @@ class Rook extends Pawn {
 class Game {
   constructor() {
     this.newGame();
+    this.initGame();
+    this.changeTurn();
   }
   initGame() {
     this.turn = "white";
