@@ -10,12 +10,9 @@ Array.from(squares).forEach((item) => {
 //   renderPieces();
 // };
 class Move {
-  constructor(id, type, turn) {
+  constructor(id, type) {
     (this.id = id), (this.type = type);
-    this.currentPieceLocation,
-      this.rowPossible,
-      this.colPossible,
-      (this.turn = turn);
+    this.currentPieceLocation, this.rowPossible, this.colPossible;
   }
 
   // changeTurn() {
