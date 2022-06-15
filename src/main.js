@@ -10,9 +10,12 @@ Array.from(squares).forEach((item) => {
 //   renderPieces();
 // };
 class Move {
-  constructor(id, type) {
+  constructor(id, type, turn) {
     (this.id = id), (this.type = type);
-    this.currentPieceLocation, this.rowPossible, this.colPossible;
+    this.currentPieceLocation,
+      this.rowPossible,
+      this.colPossible,
+      (this.turn = turn);
   }
 
   // changeTurn() {
@@ -55,15 +58,15 @@ class Move {
         rook.getMove(this.rowPossible, this.colPossible);
       }
       //////// white bishop
-      // if (this.type === "bishop") {
-      //   const bishop = new Bishop(
-      //     e.currentTarget.id,
-      //     this.rowPossible,
-      //     this.colPossible
-      //   );
+      if (this.type === "bishop") {
+        const bishop = new Bishop(
+          e.currentTarget.id,
+          this.rowPossible,
+          this.colPossible
+        );
 
-      //   bishop.getMove(this.rowPossible, this.colPossible);
-      // }
+        bishop.getMove(this.rowPossible, this.colPossible);
+      }
       // //////////////// white king
       // const king = new King(
       //   e.currentTarget.id,
@@ -328,7 +331,8 @@ class Pawn {
 
   getMove(row, col) {
     let pieceID = document.getElementById(this.id);
-
+    let pieceOldLoc = pieceID.parentNode;
+    // let currentPieceLocation = e.currentTarget.parentNode.id;
     const squares = document.querySelectorAll(".box");
     Array.from(squares).filter((item) => {
       const possibleMove = item.id.split("");
@@ -337,50 +341,51 @@ class Pawn {
       //apply opacity on 1st square
       let adjacentPiece = document.getElementById(col + (row + 1).toString());
 
-      // if (!adjacentPiece.hasChildNodes()) {
-      for (let i = 1; i < 3; i++) {
-        if (
-          this.color === "white" &&
-          !item.hasChildNodes() &&
-          r === row + i &&
-          c === col
-        ) {
-          item.classList.toggle("valid-move");
-          item.onclick = () => {
-            // pieceID.parentNode.removeChild(pieceID);
-            Array.from(squares).forEach((square) => {
-              if (square.classList.contains("valid-move")) {
-                square.classList.remove("valid-move");
-                item.append(pieceID);
-                pieceID.parentNode.innerHtml = "";
-              }
-            });
-            game.changeTurn();
+      if (!adjacentPiece.hasChildNodes()) {
+        for (let i = 1; i < 3; i++) {
+          if (
+            this.color === "white" &&
+            !item.hasChildNodes() &&
+            r === row + i &&
+            c === col
+          ) {
+            item.classList.toggle("valid-move");
+            item.onclick = () => {
+              // pieceID.parentNode.removeChild(pieceID);
+              Array.from(squares).forEach((square) => {
+                if (square.classList.contains("valid-move")) {
+                  square.classList.remove("valid-move");
+                  item.append(pieceID);
+                  pieceOldLoc.innerHTML = "";
+                }
+              });
+              game.newGame();
+              game.changeTurn();
+              console.log(this.turn);
+            };
+            break;
+          }
 
-            console.log(this.turn);
-          };
-          break;
-        }
-
-        if (
-          this.color === "black" &&
-          !item.hasChildNodes() &&
-          r === row - i &&
-          c === col
-        ) {
-          item.classList.toggle("valid-move");
-          item.onclick = () => {
-            // pieceID.parentNode.removeChild(pieceID);
-            Array.from(squares).forEach((square) => {
-              if (square.classList.contains("valid-move")) {
-                square.classList.remove("valid-move");
-                item.append(pieceID);
-                pieceID.parentNode.innerHtml = "";
-              }
-            });
-            game.changeTurn();
-          };
-          break;
+          if (
+            this.color === "black" &&
+            !item.hasChildNodes() &&
+            r === row - i &&
+            c === col
+          ) {
+            item.classList.toggle("valid-move");
+            item.onclick = () => {
+              pieceID.parentNode.removeChild(pieceID);
+              Array.from(squares).forEach((square) => {
+                if (square.classList.contains("valid-move")) {
+                  square.classList.remove("valid-move");
+                  item.append(pieceID);
+                  pieceOldLoc.innerHTML = "";
+                }
+              });
+              game.changeTurn();
+            };
+            break;
+          }
         }
       }
     });
@@ -405,7 +410,7 @@ class Rook extends Pawn {
       let adjacentPieceBlack = document.getElementById(
         col + (row - 1).toString()
       );
-      if (adjacentPieceWhite.innerHTML == "") {
+      if (adjacentPieceWhite.innerHTML === "") {
         if (["A", "B", "C", "D", "E", "F", "G", "H"].includes(c) && r === row) {
           // if (item.id !== currentPieceLocation) {
           item.classList.toggle("valid-move");
@@ -463,50 +468,49 @@ class Rook extends Pawn {
 //     piece.getWhitePossibleMoves();
 //   }
 // }
-// class Bishop extends Pawn {
-//   constructor() {
-//     super(id, row, col);
-//   }
-//   getMove(row, col) {
-//     let pieceID = document.getElementById(this.id);
+class Bishop extends Pawn {
+  constructor(id, row, col) {
+    super(id, row, col);
+  }
+  getMove(row, col) {
+    let pieceID = document.getElementById(this.id);
 
-//     const squares = document.querySelectorAll(".box");
-//     Array.from(squares).filter((item) => {
-//       const possibleMove = item.id.split("");
-//       let c = possibleMove[0];
-//       let r = parseInt(possibleMove[1]);
+    const squares = document.querySelectorAll(".box");
+    Array.from(squares).filter((item) => {
+      const possibleMove = item.id.split("");
+      let c = possibleMove[0];
+      let r = parseInt(possibleMove[1]);
 
-//       let adjacentPiece = document.getElementById(col + (row + 1).toString());
+      let adjacentPiece = document.getElementById(col + (row + 1).toString());
+      let alphaArray = ["A", "B", "C", "D", "E", "F", "G", "H"];
+      // if (!adjacentPiece.hasChildNodes()) {
+      for (let i = row; i < 9; i++) {
+        for (let j = alphaArray[row - 1]; j < alphaArray.length - 1; j++) {
+          if (j === row + i && r === row + i) {
+            // if (item.id !== currentPieceLocation) {
+            item.classList.toggle("valid-move");
+            console.log("hello");
+            //this function is repetitive. Let's create a method for this later
+            item.onclick = () => {
+              //item.append(pieceID); relocated inside
+              Array.from(squares).forEach((square) => {
+                if (square.classList.contains("valid-move")) {
+                  square.classList.remove("valid-move");
+                  item.append(pieceID); //relocated this, here so player can't move the piece if the the squares have no 'valid-move' class
 
-//       // if (!adjacentPiece.hasChildNodes()) {
-//       // for (let i = row; i < 9; i++) {
-//       if (["A", "B", "C", "D", "E", "F", "G", "H"].includes(c) && r === row) {
-//         // if (item.id !== currentPieceLocation) {
-//         item.classList.toggle("valid-move");
-//         console.log("hello");
-//         //this function is repetitive. Let's create a method for this later
-//         item.onclick = () => {
-//           //item.append(pieceID); relocated inside
-//           Array.from(squares).forEach((square) => {
-//             if (square.classList.contains("valid-move")) {
-//               square.classList.remove("valid-move");
-//               item.append(pieceID); //relocated this, here so player can't move the piece if the the squares have no 'valid-move' class
-
-//               // this.changeTurn();
-//               // this.turn === "black";
-//               //
-//             }
-//           });
-//           this.changeTurn();
-//         };
-//         // }
-//       }
-//       // }
-
-//       //  }
-//     });
-//   }
-// }
+                  // this.changeTurn();
+                  // this.turn === "black";
+                  //
+                }
+              });
+            };
+            // }
+          }
+        }
+      }
+    });
+  }
+}
 // class Queen extends Pawn {
 //   constructor() {
 //     super(id, color, row, col);
@@ -629,16 +633,18 @@ class Game {
   newGame() {
     console.log(this.turn);
     if (this.turn === "black") {
-      const bp1 = new Move("bp1", "pawn");
-      const bp2 = new Move("bp2", "pawn");
-      const bp3 = new Move("bp3", "pawn");
-      const bp4 = new Move("bp4", "pawn");
-      const bp5 = new Move("bp5", "pawn");
-      const bp6 = new Move("bp6", "pawn");
-      const bp7 = new Move("bp7", "pawn");
-      const bp8 = new Move("bp8", "pawn");
-      const br1 = new Move("br1", "rook");
-      const br2 = new Move("br2", "rook");
+      const bp1 = new Move("bp1", "pawn", this.turn);
+      const bp2 = new Move("bp2", "pawn", this.turn);
+      const bp3 = new Move("bp3", "pawn", this.turn);
+      const bp4 = new Move("bp4", "pawn", this.turn);
+      const bp5 = new Move("bp5", "pawn", this.turn);
+      const bp6 = new Move("bp6", "pawn", this.turn);
+      const bp7 = new Move("bp7", "pawn", this.turn);
+      const bp8 = new Move("bp8", "pawn", this.turn);
+      const br1 = new Move("br1", "rook", this.turn);
+      const br2 = new Move("br2", "rook", this.turn);
+      const bb1 = new Move("bb1", "bishop", this.turn);
+      const bb2 = new Move("bb2", "bishop", this.turn);
       const bk = new Move("bk");
       const bq = new Move("bq");
 
@@ -652,20 +658,24 @@ class Game {
       bp8.getBlackPossibleMoves();
       br1.getBlackPossibleMoves();
       br2.getBlackPossibleMoves();
+      bb1.getBlackPossibleMoves();
+      bb2.getBlackPossibleMoves();
       bk.getBlackPossibleMoves();
       bq.getBlackPossibleMoves();
     }
     if (this.turn === "white") {
-      const wp1 = new Move("wp1", "pawn");
-      const wp2 = new Move("wp2", "pawn");
-      const wp3 = new Move("wp3", "pawn");
-      const wp4 = new Move("wp4", "pawn");
-      const wp5 = new Move("wp5", "pawn");
-      const wp6 = new Move("wp6", "pawn");
-      const wp7 = new Move("wp7", "pawn");
-      const wp8 = new Move("wp8", "pawn");
-      const wr1 = new Move("wr1", "rook");
-      const wr2 = new Move("wr2", "rook");
+      const wp1 = new Move("wp1", "pawn", this.turn);
+      const wp2 = new Move("wp2", "pawn", this.turn);
+      const wp3 = new Move("wp3", "pawn", this.turn);
+      const wp4 = new Move("wp4", "pawn", this.turn);
+      const wp5 = new Move("wp5", "pawn", this.turn);
+      const wp6 = new Move("wp6", "pawn", this.turn);
+      const wp7 = new Move("wp7", "pawn", this.turn);
+      const wp8 = new Move("wp8", "pawn", this.turn);
+      const wr1 = new Move("wr1", "rook", this.turn);
+      const wr2 = new Move("wr2", "rook", this.turn);
+      const wb1 = new Move("wb1", "bishop", this.turn);
+      const wb2 = new Move("wb2", "bishop", this.turn);
       const wk = new Move("wk");
       const wq = new Move("wq");
 
@@ -679,6 +689,8 @@ class Game {
       wp8.getWhitePossibleMoves();
       wr1.getWhitePossibleMoves();
       wr2.getWhitePossibleMoves();
+      wb1.getWhitePossibleMoves();
+      wb2.getWhitePossibleMoves();
       wk.getWhitePossibleMoves();
       wq.getWhitePossibleMoves();
     }
