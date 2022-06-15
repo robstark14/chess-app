@@ -10,12 +10,12 @@ Array.from(squares).forEach((item) => {
 //   renderPieces();
 // };
 class Move {
-  constructor(id) {
-    (this.id = id),
-      this.currentPieceLocation,
+  constructor(id, type, turn) {
+    (this.id = id), (this.type = type);
+    this.currentPieceLocation,
       this.rowPossible,
-      this.colPossible;
-    this.turn;
+      this.colPossible,
+      (this.turn = turn);
   }
 
   // changeTurn() {
@@ -39,38 +39,52 @@ class Move {
       console.log(this.colPossible);
       // e.currentTarget.classList.remove("valid-move");
       ////////////// //white pawn
-      const whitePawn = new Pawn(
-        e.currentTarget.id,
-        "white",
-        this.rowPossible,
-        this.colPossible
-      );
-      whitePawn.getMove(this.rowPossible, this.colPossible);
+      if (this.type === "pawn") {
+        const whitePawn = new Pawn(
+          e.currentTarget.id,
+          "white",
+          this.rowPossible,
+          this.colPossible
+        );
+        whitePawn.getMove(this.rowPossible, this.colPossible);
+      }
+      /////////////  white rook
+      if (this.type === "rook") {
+        const rook = new Rook(
+          e.currentTarget.id,
+          this.rowPossible,
+          this.colPossible
+        );
+        rook.getMove(this.rowPossible, this.colPossible);
+      }
+      //////// white bishop
+      // if (this.type === "bishop") {
+      //   const bishop = new Bishop(
+      //     e.currentTarget.id,
+      //     this.rowPossible,
+      //     this.colPossible
+      //   );
+
+      //   bishop.getMove(this.rowPossible, this.colPossible);
+      // }
+      // //////////////// white king
+      // const king = new King(
+      //   e.currentTarget.id,
+      //   "white",
+      //   this.rowPossible,
+      //   this.colPossible
+      // );
+      // king.getMove(this.rowPossible, this.colPossible);
+      // //////////////// white queen
+      // const queen = new Queen(
+      //   e.currentTarget.id,
+      //   "white",
+      //   this.rowPossible,
+      //   this.colPossible
+      // );
+      // queen.getMove(e.currentTarget.id);
+      // }
     };
-    // }
-    ///////////////  white rook
-    const rook = new Rook(
-      e.currentTarget.id,
-      this.rowPossible,
-      this.colPossible
-    );
-    rook.getMove(this.rowPossible, this.colPossible);
-    // //////////////// white king
-    // const king = new King(
-    //   e.currentTarget.id,
-    //   "white",
-    //   this.rowPossible,
-    //   this.colPossible
-    // );
-    // king.getMove(this.rowPossible, this.colPossible);
-    // //////////////// white queen
-    // const queen = new Queen(
-    //   e.currentTarget.id,
-    //   "white",
-    //   this.rowPossible,
-    //   this.colPossible
-    // );
-    // queen.getMove(e.currentTarget.id);
     // }
   }
   getBlackPossibleMoves() {
@@ -89,27 +103,34 @@ class Move {
       console.log(this.colPossible);
       // e.currentTarget.classList.remove("valid-move");
       ////////////// //white pawn
+      if (this.type === "pawn") {
+        const blackPawn = new Pawn(
+          e.currentTarget.id,
+          "black",
+          this.rowPossible,
+          this.colPossible
+        );
+        // if (this.turn === "black") {
 
-      const blackPawn = new Pawn(
-        e.currentTarget.id,
-        "black",
-        this.rowPossible,
-        this.colPossible
-      );
-      // if (this.turn === "black") {
-
-      // } else {
-      blackPawn.getMove(this.rowPossible, this.colPossible);
-
+        // } else {
+        blackPawn.getMove(this.rowPossible, this.colPossible);
+      }
       // }
       ///////////////  white rook
-      const rook = new Rook(
-        e.currentTarget.id,
-        this.rowPossible,
-        this.colPossible
-      );
-      rook.getMove(this.rowPossible, this.colPossible);
-
+      if (this.type === "rook") {
+        const rook = new Rook(
+          e.currentTarget.id,
+          this.rowPossible,
+          this.colPossible
+        );
+        rook.getMove(this.rowPossible, this.colPossible);
+      } //////// white bishop
+      // const bishop = new Bishop(
+      //   e.currentTarget.id,
+      //   this.rowPossible,
+      //   this.colPossible
+      // );
+      // bishop.getMove(this.rowPossible, this.colPossible);
       // //////////////// white king
       // const king = new King(
       //   e.currentTarget.id,
@@ -301,7 +322,7 @@ class Pawn {
     this.color = color;
     this.row = row;
     this.col = col;
-    this.turn;
+
     // this.pieceID = pieceID;
   }
   // changeTurn() {
@@ -334,11 +355,14 @@ class Pawn {
               if (square.classList.contains("valid-move")) {
                 square.classList.remove("valid-move");
                 item.append(pieceID);
+                pieceID.parentNode.innerHtml = "";
               }
             });
             game.changeTurn();
+
             console.log(this.turn);
           };
+          break;
         }
 
         if (
@@ -354,10 +378,12 @@ class Pawn {
               if (square.classList.contains("valid-move")) {
                 square.classList.remove("valid-move");
                 item.append(pieceID);
+                pieceID.parentNode.innerHtml = "";
               }
             });
             game.changeTurn();
           };
+          break;
         }
       }
     });
@@ -376,9 +402,13 @@ class Rook extends Pawn {
       let c = possibleMove[0];
       let r = parseInt(possibleMove[1]);
 
-      let adjacentPiece = document.getElementById(col + (row + 1).toString());
-
-      if (!adjacentPiece.hasChildNodes()) {
+      let adjacentPieceWhite = document.getElementById(
+        col + (row + 1).toString()
+      );
+      let adjacentPieceBlack = document.getElementById(
+        col + (row - 1).toString()
+      );
+      if (adjacentPieceWhite.innerHTML == "") {
         if (["A", "B", "C", "D", "E", "F", "G", "H"].includes(c) && r === row) {
           // if (item.id !== currentPieceLocation) {
           item.classList.toggle("valid-move");
@@ -392,13 +422,13 @@ class Rook extends Pawn {
               ) {
                 square.classList.remove("valid-move");
                 item.append(pieceID); //relocated this, here so player can't move the piece if the the squares have no 'valid-move' class
-
+                pieceID.parentNode.innerHtml = "";
                 // this.changeTurn();
                 // this.turn === "black";
                 //
               }
             });
-            this.changeTurn();
+            // this.changeTurn();
           };
           // }
         }
@@ -414,7 +444,7 @@ class Rook extends Pawn {
                 if (square.classList.contains("valid-move")) {
                   square.classList.remove("valid-move");
                   item.append(pieceID); //relocated here
-
+                  pieceID.parentNode.innerHtml = "";
                   // this.turn === "black";
                 }
               });
@@ -438,12 +468,46 @@ class Rook extends Pawn {
 // }
 // class Bishop extends Pawn {
 //   constructor() {
-//     super(id, color, row, col);
+//     super(id, row, col);
 //   }
-//   getMove() {
-//     const piece = new Move(this.id);
-//     piece.getBlackPossibleMoves();
-//     piece.getWhitePossibleMoves();
+//   getMove(row, col) {
+//     let pieceID = document.getElementById(this.id);
+
+//     const squares = document.querySelectorAll(".box");
+//     Array.from(squares).filter((item) => {
+//       const possibleMove = item.id.split("");
+//       let c = possibleMove[0];
+//       let r = parseInt(possibleMove[1]);
+
+//       let adjacentPiece = document.getElementById(col + (row + 1).toString());
+
+//       // if (!adjacentPiece.hasChildNodes()) {
+//       // for (let i = row; i < 9; i++) {
+//       if (["A", "B", "C", "D", "E", "F", "G", "H"].includes(c) && r === row) {
+//         // if (item.id !== currentPieceLocation) {
+//         item.classList.toggle("valid-move");
+//         console.log("hello");
+//         //this function is repetitive. Let's create a method for this later
+//         item.onclick = () => {
+//           //item.append(pieceID); relocated inside
+//           Array.from(squares).forEach((square) => {
+//             if (square.classList.contains("valid-move")) {
+//               square.classList.remove("valid-move");
+//               item.append(pieceID); //relocated this, here so player can't move the piece if the the squares have no 'valid-move' class
+
+//               // this.changeTurn();
+//               // this.turn === "black";
+//               //
+//             }
+//           });
+//           this.changeTurn();
+//         };
+//         // }
+//       }
+//       // }
+
+//       //  }
+//     });
 //   }
 // }
 // class Queen extends Pawn {
@@ -554,29 +618,30 @@ class Rook extends Pawn {
 // }
 class Game {
   constructor() {
-    this.newGame();
-    this.initGame();
-    this.changeTurn();
+    this.newGame(), this.initGame();
   }
   initGame() {
     this.turn = "white";
   }
   changeTurn() {
     this.turn = this.turn === "white" ? "black" : "white";
+    // console.log(this.turn);
+    console.log(this);
   }
 
   newGame() {
+    console.log(this.turn);
     if (this.turn === "black") {
-      const bp1 = new Move("bp1");
-      const bp2 = new Move("bp2");
-      const bp3 = new Move("bp3");
-      const bp4 = new Move("bp4");
-      const bp5 = new Move("bp5");
-      const bp6 = new Move("bp6");
-      const bp7 = new Move("bp7");
-      const bp8 = new Move("bp8");
-      const br1 = new Move("br1");
-      const br2 = new Move("br2");
+      const bp1 = new Move("bp1", "pawn");
+      const bp2 = new Move("bp2", "pawn");
+      const bp3 = new Move("bp3", "pawn");
+      const bp4 = new Move("bp4", "pawn");
+      const bp5 = new Move("bp5", "pawn");
+      const bp6 = new Move("bp6", "pawn");
+      const bp7 = new Move("bp7", "pawn");
+      const bp8 = new Move("bp8", "pawn");
+      const br1 = new Move("br1", "rook");
+      const br2 = new Move("br2", "rook");
       const bk = new Move("bk");
       const bq = new Move("bq");
 
@@ -594,16 +659,16 @@ class Game {
       bq.getBlackPossibleMoves();
     }
     if (this.turn === "white") {
-      const wp1 = new Move("wp1");
-      const wp2 = new Move("wp2");
-      const wp3 = new Move("wp3");
-      const wp4 = new Move("wp4");
-      const wp5 = new Move("wp5");
-      const wp6 = new Move("wp6");
-      const wp7 = new Move("wp7");
-      const wp8 = new Move("wp8");
-      const wr1 = new Move("wr1");
-      const wr2 = new Move("wr2");
+      const wp1 = new Move("wp1", "pawn");
+      const wp2 = new Move("wp2", "pawn");
+      const wp3 = new Move("wp3", "pawn");
+      const wp4 = new Move("wp4", "pawn");
+      const wp5 = new Move("wp5", "pawn");
+      const wp6 = new Move("wp6", "pawn");
+      const wp7 = new Move("wp7", "pawn");
+      const wp8 = new Move("wp8", "pawn");
+      const wr1 = new Move("wr1", "rook");
+      const wr2 = new Move("wr2", "rook");
       const wk = new Move("wk");
       const wq = new Move("wq");
 
