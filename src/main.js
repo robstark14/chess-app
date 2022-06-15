@@ -1,7 +1,7 @@
 //to be deleted. Just to show the location of squares
 const squares = document.querySelectorAll(".box");
 Array.from(squares).forEach((item) => {
-  // item.innerHTML += `<span>${item.id}</span>`;
+  item.innerHTML += `<span>${item.id}</span>`;
 });
 //
 
@@ -473,6 +473,22 @@ class Bishop extends Pawn {
     super(id, row, col);
   }
   getMove(row, col) {
+    let alphaArray = ["A", "B", "C", "D", "E", "F", "G", "H"];
+    let alphaInvertedArray = ["H", "G", "F", "E", "D", "C", "B", "A"];
+    const pieceColRight = alphaArray.filter((item) => {
+      if (col === item) {
+        console.log(item);
+        return item;
+      }
+    });
+    const pieceColLeft = alphaInvertedArray.filter((item) => {
+      if (col === item) {
+        console.log(item);
+        return item;
+      }
+    });
+    const colIndexRight = alphaArray.indexOf(pieceColRight.toString());
+    const colIndexLeft = alphaInvertedArray.indexOf(pieceColRight.toString());
     let pieceID = document.getElementById(this.id);
 
     const squares = document.querySelectorAll(".box");
@@ -482,30 +498,71 @@ class Bishop extends Pawn {
       let r = parseInt(possibleMove[1]);
 
       let adjacentPiece = document.getElementById(col + (row + 1).toString());
-      let alphaArray = ["A", "B", "C", "D", "E", "F", "G", "H"];
-      // if (!adjacentPiece.hasChildNodes()) {
-      for (let i = row; i < 9; i++) {
-        for (let j = alphaArray[row - 1]; j < alphaArray.length - 1; j++) {
-          if (j === row + i && r === row + i) {
-            // if (item.id !== currentPieceLocation) {
-            item.classList.toggle("valid-move");
-            console.log("hello");
-            //this function is repetitive. Let's create a method for this later
-            item.onclick = () => {
-              //item.append(pieceID); relocated inside
-              Array.from(squares).forEach((square) => {
-                if (square.classList.contains("valid-move")) {
-                  square.classList.remove("valid-move");
-                  item.append(pieceID); //relocated this, here so player can't move the piece if the the squares have no 'valid-move' class
 
-                  // this.changeTurn();
-                  // this.turn === "black";
-                  //
-                }
-              });
-            };
-            // }
-          }
+      // if (!adjacentPiece.hasChildNodes()) {
+
+      for (let i = 1; i < alphaArray.length; i++) {
+        if (c === alphaArray[colIndexRight + i] && r === row + i) {
+          // if (item.id !== currentPieceLocation) {
+          item.classList.toggle("valid-move");
+          console.log("hello");
+          //this function is repetitive. Let's create a method for this later
+          item.onclick = () => {
+            //item.append(pieceID); relocated inside
+            Array.from(squares).forEach((square) => {
+              if (square.classList.contains("valid-move")) {
+                square.classList.remove("valid-move");
+                item.append(pieceID); //relocated this, here so player can't move the piece if the the squares have no 'valid-move' class
+              }
+            });
+          };
+        }
+        if (c === alphaArray[colIndexRight - i] && r === row - i) {
+          // if (item.id !== currentPieceLocation) {
+          item.classList.toggle("valid-move");
+          console.log("hello");
+          //this function is repetitive. Let's create a method for this later
+          item.onclick = () => {
+            //item.append(pieceID); relocated inside
+            Array.from(squares).forEach((square) => {
+              if (square.classList.contains("valid-move")) {
+                square.classList.remove("valid-move");
+                item.append(pieceID); //relocated this, here so player can't move the piece if the the squares have no 'valid-move' class
+              }
+            });
+          };
+        }
+      }
+      for (let i = 1; i < alphaInvertedArray.length; i++) {
+        if (c === alphaInvertedArray[colIndexLeft + i] && r === row + i) {
+          // if (item.id !== currentPieceLocation) {
+          item.classList.toggle("valid-move");
+          console.log("hello");
+          //this function is repetitive. Let's create a method for this later
+          item.onclick = () => {
+            //item.append(pieceID); relocated inside
+            Array.from(squares).forEach((square) => {
+              if (square.classList.contains("valid-move")) {
+                square.classList.remove("valid-move");
+                item.append(pieceID); //relocated this, here so player can't move the piece if the the squares have no 'valid-move' class
+              }
+            });
+          };
+        }
+        if (c === alphaInvertedArray[colIndexLeft - i] && r === row - i) {
+          // if (item.id !== currentPieceLocation) {
+          item.classList.toggle("valid-move");
+          console.log("hello");
+          //this function is repetitive. Let's create a method for this later
+          item.onclick = () => {
+            //item.append(pieceID); relocated inside
+            Array.from(squares).forEach((square) => {
+              if (square.classList.contains("valid-move")) {
+                square.classList.remove("valid-move");
+                item.append(pieceID); //relocated this, here so player can't move the piece if the the squares have no 'valid-move' class
+              }
+            });
+          };
         }
       }
     });
