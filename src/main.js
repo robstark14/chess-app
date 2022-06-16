@@ -1,7 +1,7 @@
 //to be deleted. Just to show the location of squares
 const squares = document.querySelectorAll(".box");
 Array.from(squares).forEach((item) => {
-  item.innerHTML += `<span>${item.id}</span>`;
+  // item.innerHTML += `<span>${item.id}</span>`;
 });
 //
 
