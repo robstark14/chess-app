@@ -46,7 +46,7 @@ class Move {
           this.rowPossible,
           this.colPossible
         );
-        whitePawn.getMove(this.rowPossible, this.colPossible);
+        whitePawn.getPawnMove(this.rowPossible, this.colPossible);
       }
       /////////////  white rook
       if (this.type === "rook") {
@@ -55,7 +55,7 @@ class Move {
           this.rowPossible,
           this.colPossible
         );
-        rook.getMove(this.rowPossible, this.colPossible);
+        rook.getRookMove(this.rowPossible, this.colPossible);
       }
       //////// white bishop
       if (this.type === "bishop") {
@@ -65,7 +65,8 @@ class Move {
           this.colPossible
         );
 
-        bishop.getMove(this.rowPossible, this.colPossible);
+        bishop.getBishopMove(this.rowPossible, this.colPossible);
+        console.log("clicked");
       }
       // //////////////// white king
       // const king = new King(
@@ -76,14 +77,22 @@ class Move {
       // );
       // king.getMove(this.rowPossible, this.colPossible);
       // //////////////// white queen
-      // const queen = new Queen(
-      //   e.currentTarget.id,
-      //   "white",
-      //   this.rowPossible,
-      //   this.colPossible
-      // );
-      // queen.getMove(e.currentTarget.id);
-      // }
+      if (this.type === "queen") {
+        const queen = new Queen(
+          e.currentTarget.id,
+          this.rowPossible,
+          this.colPossible
+        );
+        Object.assign(
+          queen,
+          new Bishop(e.currentTarget.id, this.rowPossible, this.colPossible)
+        );
+
+        // queen.getQueenMove(this.rowPossible, this.colPossible);
+        queen.getRookMove(this.rowPossible, this.colPossible);
+        queen.getBishopMove(this.rowPossible, this.colPossible);
+        console.log("clicked");
+      }
     };
     // }
   }
@@ -113,7 +122,7 @@ class Move {
         // if (this.turn === "black") {
 
         // } else {
-        blackPawn.getMove(this.rowPossible, this.colPossible);
+        blackPawn.getPawnMove(this.rowPossible, this.colPossible);
       }
       // }
       ///////////////  white rook
@@ -123,7 +132,7 @@ class Move {
           this.rowPossible,
           this.colPossible
         );
-        rook.getMove(this.rowPossible, this.colPossible);
+        rook.getRookMove(this.rowPossible, this.colPossible);
       } //////// white bishop
       // const bishop = new Bishop(
       //   e.currentTarget.id,
@@ -329,7 +338,7 @@ class Pawn {
   //   this.turn = this.turn === "black" ? "white" : "black";
   // }
 
-  getMove(row, col) {
+  getPawnMove(row, col) {
     let pieceID = document.getElementById(this.id);
     let pieceOldLoc = pieceID.parentNode;
     // let currentPieceLocation = e.currentTarget.parentNode.id;
@@ -357,9 +366,10 @@ class Pawn {
                   square.classList.remove("valid-move");
                   item.append(pieceID);
                   pieceOldLoc.innerHTML = "";
+                  game.newGame();
                 }
               });
-              game.newGame();
+
               game.changeTurn();
               console.log(this.turn);
             };
@@ -395,7 +405,7 @@ class Rook extends Pawn {
   constructor(id, row, col) {
     super(id, row, col);
   }
-  getMove(row, col) {
+  getRookMove(row, col) {
     let pieceID = document.getElementById(this.id);
 
     const squares = document.querySelectorAll(".box");
@@ -410,51 +420,51 @@ class Rook extends Pawn {
       let adjacentPieceBlack = document.getElementById(
         col + (row - 1).toString()
       );
-      if (adjacentPieceWhite.innerHTML === "") {
-        if (["A", "B", "C", "D", "E", "F", "G", "H"].includes(c) && r === row) {
-          // if (item.id !== currentPieceLocation) {
+      // if (adjacentPieceWhite.innerHTML === "") {
+      if (["A", "B", "C", "D", "E", "F", "G", "H"].includes(c) && r === row) {
+        // if (item.id !== currentPieceLocation) {
+        item.classList.toggle("valid-move");
+        //this function is repetitive. Let's create a method for this later
+        item.onclick = () => {
+          //item.append(pieceID); relocated inside
+          Array.from(squares).forEach((square) => {
+            if (
+              square.classList.contains("valid-move") &&
+              this.turn === "white"
+            ) {
+              square.classList.remove("valid-move");
+              item.append(pieceID); //relocated this, here so player can't move the piece if the the squares have no 'valid-move' class
+              pieceID.parentNode.innerHtml = "";
+              // this.changeTurn();
+              // this.turn === "black";
+              //
+            }
+          });
+          // this.changeTurn();
+        };
+        // }
+      }
+
+      for (let i = 1; i < 8; i++) {
+        if (!item.hasChildNodes() && r === row + i && c === col) {
           item.classList.toggle("valid-move");
-          //this function is repetitive. Let's create a method for this later
           item.onclick = () => {
-            //item.append(pieceID); relocated inside
+            // item.innerHTML = `<img class="b-rook" id="br1" src="./images/br.png" alt="black rbr.png">`;
+            // pieceID.parentNode.removeChild(pieceID);
+
             Array.from(squares).forEach((square) => {
-              if (
-                square.classList.contains("valid-move") &&
-                this.turn === "white"
-              ) {
+              if (square.classList.contains("valid-move")) {
                 square.classList.remove("valid-move");
-                item.append(pieceID); //relocated this, here so player can't move the piece if the the squares have no 'valid-move' class
+                item.append(pieceID); //relocated here
                 pieceID.parentNode.innerHtml = "";
-                // this.changeTurn();
                 // this.turn === "black";
-                //
               }
             });
             // this.changeTurn();
           };
-          // }
-        }
-
-        for (let i = 1; i < 8; i++) {
-          if (!item.hasChildNodes() && r === row + i && c === col) {
-            item.classList.toggle("valid-move");
-            item.onclick = () => {
-              // item.innerHTML = `<img class="b-rook" id="br1" src="./images/br.png" alt="black rbr.png">`;
-              // pieceID.parentNode.removeChild(pieceID);
-
-              Array.from(squares).forEach((square) => {
-                if (square.classList.contains("valid-move")) {
-                  square.classList.remove("valid-move");
-                  item.append(pieceID); //relocated here
-                  pieceID.parentNode.innerHtml = "";
-                  // this.turn === "black";
-                }
-              });
-              // this.changeTurn();
-            };
-          }
         }
       }
+      // }
     });
   }
 }
@@ -472,7 +482,7 @@ class Bishop extends Pawn {
   constructor(id, row, col) {
     super(id, row, col);
   }
-  getMove(row, col) {
+  getBishopMove(row, col) {
     let alphaArray = ["A", "B", "C", "D", "E", "F", "G", "H"];
     let alphaInvertedArray = ["H", "G", "F", "E", "D", "C", "B", "A"];
     const pieceColRight = alphaArray.filter((item) => {
@@ -488,7 +498,7 @@ class Bishop extends Pawn {
       }
     });
     const colIndexRight = alphaArray.indexOf(pieceColRight.toString());
-    const colIndexLeft = alphaInvertedArray.indexOf(pieceColRight.toString());
+    const colIndexLeft = alphaInvertedArray.indexOf(pieceColLeft.toString());
     let pieceID = document.getElementById(this.id);
 
     const squares = document.querySelectorAll(".box");
@@ -505,7 +515,7 @@ class Bishop extends Pawn {
         if (c === alphaArray[colIndexRight + i] && r === row + i) {
           // if (item.id !== currentPieceLocation) {
           item.classList.toggle("valid-move");
-          console.log("hello");
+
           //this function is repetitive. Let's create a method for this later
           item.onclick = () => {
             //item.append(pieceID); relocated inside
@@ -513,14 +523,16 @@ class Bishop extends Pawn {
               if (square.classList.contains("valid-move")) {
                 square.classList.remove("valid-move");
                 item.append(pieceID); //relocated this, here so player can't move the piece if the the squares have no 'valid-move' class
+                console.log("clicked");
               }
             });
           };
+          game.newGame();
         }
         if (c === alphaArray[colIndexRight - i] && r === row - i) {
           // if (item.id !== currentPieceLocation) {
           item.classList.toggle("valid-move");
-          console.log("hello");
+
           //this function is repetitive. Let's create a method for this later
           item.onclick = () => {
             //item.append(pieceID); relocated inside
@@ -528,16 +540,18 @@ class Bishop extends Pawn {
               if (square.classList.contains("valid-move")) {
                 square.classList.remove("valid-move");
                 item.append(pieceID); //relocated this, here so player can't move the piece if the the squares have no 'valid-move' class
+                console.log("clicked");
               }
             });
           };
+          game.newGame();
         }
       }
       for (let i = 1; i < alphaInvertedArray.length; i++) {
         if (c === alphaInvertedArray[colIndexLeft + i] && r === row + i) {
           // if (item.id !== currentPieceLocation) {
           item.classList.toggle("valid-move");
-          console.log("hello");
+
           //this function is repetitive. Let's create a method for this later
           item.onclick = () => {
             //item.append(pieceID); relocated inside
@@ -545,14 +559,16 @@ class Bishop extends Pawn {
               if (square.classList.contains("valid-move")) {
                 square.classList.remove("valid-move");
                 item.append(pieceID); //relocated this, here so player can't move the piece if the the squares have no 'valid-move' class
+                console.log("clicked");
               }
             });
           };
+          game.newGame();
         }
         if (c === alphaInvertedArray[colIndexLeft - i] && r === row - i) {
           // if (item.id !== currentPieceLocation) {
           item.classList.toggle("valid-move");
-          console.log("hello");
+
           //this function is repetitive. Let's create a method for this later
           item.onclick = () => {
             //item.append(pieceID); relocated inside
@@ -560,68 +576,24 @@ class Bishop extends Pawn {
               if (square.classList.contains("valid-move")) {
                 square.classList.remove("valid-move");
                 item.append(pieceID); //relocated this, here so player can't move the piece if the the squares have no 'valid-move' class
+                console.log("clicked");
               }
             });
           };
+          game.newGame();
         }
       }
     });
   }
 }
-// class Queen extends Pawn {
-//   constructor() {
-//     super(id, color, row, col);
-//     this.pieceID = pieceID;
-//   }
-//   getMove(pieceID) {
-//     pieceID.onclick = () => {
-//       console.log(this.turn);
-//       // const piece = new Move(this.id);
-//       // piece.getBlackPossibleMoves();
-//       // piece.getWhitePossibleMoves();
-//       if (this.turn === "white") {
-//         Array.from(squares).filter((item) => {
-//           const possibleMove = item.id.split("");
-//           let col = possibleMove[0];
-//           let row = parseInt(possibleMove[1]);
-
-//           let adjacentPiece = document.getElementById(
-//             colPossible + (rowPossible + 1).toString()
-//           );
-
-//           // if (!adjacentPiece.hasChildNodes()) {
-//           for (let i = 0; i < 9; i++) {
-//             if (
-//               item.hasChildNodes() === false &&
-//               row === rowPossible + i &&
-//               col === colPossible
-//             ) {
-//               item.classList.toggle("valid-move");
-//               item.onclick = () => {
-//                 // item.innerHTML = `<img class="b-king" id="bk" src="./images/bk.png" alt="black pawn" />`;
-//                 // pieceID.parentNode.removeChild(pieceID);
-
-//                 Array.from(squares).forEach((square) => {
-//                   if (square.classList.contains("valid-move")) {
-//                     square.classList.remove("valid-move");
-//                     item.append(pieceID);
-//                     this.changeTurn();
-//                     // renderPieces();
-//                     // this.turn === "black";
-//                   }
-//                 });
-//                 this.changeTurn();
-//               };
-//               if (!e.currentTarget.parentNode.hasChildNodes()) {
-//               }
-//             }
-//           }
-//           // }
-//         });
-//       }
-//     };
-//   }
-// }
+class Queen extends Rook {
+  constructor(id, row, col) {
+    super(id, row, col);
+  }
+  // getQueenMove() {
+  //   super.getRookMove();
+  // }
+}
 // class King extends Pawn {
 //   constructor() {
 //     super(id, color, row, col);
@@ -684,7 +656,7 @@ class Game {
   changeTurn() {
     this.turn = this.turn === "white" ? "black" : "white";
     // console.log(this.turn);
-    console.log(this);
+    console.log(this.turn);
   }
 
   newGame() {
@@ -702,8 +674,8 @@ class Game {
       const br2 = new Move("br2", "rook", this.turn);
       const bb1 = new Move("bb1", "bishop", this.turn);
       const bb2 = new Move("bb2", "bishop", this.turn);
-      const bk = new Move("bk");
-      const bq = new Move("bq");
+      const bk = new Move("bk", "king", this.turn);
+      const bq = new Move("bq", "queen", this.turn);
 
       bp1.getBlackPossibleMoves();
       bp2.getBlackPossibleMoves();
@@ -733,8 +705,8 @@ class Game {
       const wr2 = new Move("wr2", "rook", this.turn);
       const wb1 = new Move("wb1", "bishop", this.turn);
       const wb2 = new Move("wb2", "bishop", this.turn);
-      const wk = new Move("wk");
-      const wq = new Move("wq");
+      const wk = new Move("wk", "king", this.turn);
+      const wq = new Move("wq", "queen", this.turn);
 
       wp1.getWhitePossibleMoves();
       wp2.getWhitePossibleMoves();
