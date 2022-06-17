@@ -334,12 +334,27 @@ class Pawn {
     let pieceOldLoc = pieceID.parentNode;
     // let currentPieceLocation = e.currentTarget.parentNode.id;
     const squares = document.querySelectorAll(".box");
+
+    // console.log({
+    //   pieceID,
+    //   pieceOldLoc,
+    //   squares,
+    //   color: this.color,
+    // })
     Array.from(squares).filter((item) => {
       const possibleMove = item.id.split("");
       let c = possibleMove[0];
       let r = parseInt(possibleMove[1]);
+
       //apply opacity on 1st square
-      let adjacentPiece = document.getElementById(col + (row + 1).toString());
+      let adjacentPiece 
+      if (this.color === 'white') {
+        adjacentPiece = document.getElementById(col + (row + 1).toString());
+      } else if (this.color === 'black') {
+        adjacentPiece = document.getElementById(col + (row - 1).toString())
+      }
+
+      console.log('adjacentPiece', adjacentPiece)
 
       if (!adjacentPiece.hasChildNodes()) {
         for (let i = 1; i < 3; i++) {
@@ -349,6 +364,7 @@ class Pawn {
             r === row + i &&
             c === col
           ) {
+            console.log(352)
             item.classList.toggle("valid-move");
             item.onclick = () => {
               // pieceID.parentNode.removeChild(pieceID);
@@ -359,19 +375,19 @@ class Pawn {
                   pieceOldLoc.innerHTML = "";
                 }
               });
-              game.newGame();
               game.changeTurn();
-              console.log(this.turn);
+              // game.newGame();
             };
-            break;
+            // break;
           }
 
           if (
-            this.color === "black" &&
+            // this.color === "black" &&
             !item.hasChildNodes() &&
             r === row - i &&
             c === col
           ) {
+            console.log(376)
             item.classList.toggle("valid-move");
             item.onclick = () => {
               pieceID.parentNode.removeChild(pieceID);
@@ -383,8 +399,9 @@ class Pawn {
                 }
               });
               game.changeTurn();
+              // game.newGame()
             };
-            break;
+            // break;
           }
         }
       }
@@ -676,7 +693,7 @@ class Bishop extends Pawn {
 // }
 class Game {
   constructor() {
-    this.newGame(), this.initGame();
+    // this.newGame(), this.initGame();
   }
   initGame() {
     this.turn = "white";
@@ -684,11 +701,12 @@ class Game {
   changeTurn() {
     this.turn = this.turn === "white" ? "black" : "white";
     // console.log(this.turn);
-    console.log(this);
+    console.log('changeTurn', this);
+    this.newGame()
   }
 
   newGame() {
-    console.log(this.turn);
+    console.log('newGame')
     if (this.turn === "black") {
       const bp1 = new Move("bp1", "pawn", this.turn);
       const bp2 = new Move("bp2", "pawn", this.turn);
@@ -754,8 +772,8 @@ class Game {
   }
 }
 const game = new Game();
-game.newGame();
 game.initGame();
+game.newGame();
 // const p1 = new Piece("bp1");
 // const p2 = new Piece("bp2");
 // const p3 = new Piece("bp3");
