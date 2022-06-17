@@ -30,6 +30,9 @@ body {
   height: 100vh;
   background-color: black;
 }
+.valid-move {
+  opacity: 0.2;
+}
 header h1 {
   color: black;
   font-family: var(--font-p);

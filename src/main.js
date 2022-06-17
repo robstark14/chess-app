@@ -1,64 +1,758 @@
 //to be deleted. Just to show the location of squares
 const squares = document.querySelectorAll(".box");
 Array.from(squares).forEach((item) => {
-  item.innerHTML += `<span>${item.id}</span>`;
+  // item.innerHTML += `<span>${item.id}</span>`;
 });
-//
 
 class Move {
-  constructor(id) {
-    this.id = id;
+  constructor(id, color, type, turn) {
+    (this.id = id), (this.type = type);
+    this.color = color;
+    this.currentPieceLocation,
+      this.rowPossible,
+      this.colPossible,
+      (this.turn = turn);
   }
 
-  getWhitePossibleMoves() {
-    const squares = document.querySelectorAll(".box");
+  // changeTurn() {
+  //   this.turn = this.turn === "white" ? "black" : "white";
+  //   console.log(this.turn);
+  // }
+
+  getWhiteMoves() {
+    let pieceID = document.getElementById(this.id);
+
+    pieceID.onclick = (e) => {
+      // if (this.turn === "white") {
+
+      this.currentPieceLocation = e.currentTarget.parentNode.id;
+      console.log(this.currentPieceLocation);
+      this.rowPossible = parseInt(this.currentPieceLocation[1]); //get the id number of the possible move
+      console.log(this.rowPossible);
+      this.colPossible = this.currentPieceLocation[0]; //get the id letter of the possible move
+      console.log(this.colPossible);
+      // e.currentTarget.classList.remove("valid-move");
+      ////////////// //white pawn
+      if (this.type === "pawn") {
+        const whitePawn = new Pawn(
+          e.currentTarget.id,
+          "white",
+          this.rowPossible,
+          this.colPossible
+        );
+        whitePawn.getPawnMove(this.rowPossible, this.colPossible);
+        console.log("pawn");
+      }
+      /////////////  white rook
+      if (this.type === "rook") {
+        const rook = new Rook(
+          e.currentTarget.id,
+          "white",
+          this.rowPossible,
+          this.colPossible
+        );
+        rook.getRookMove(this.rowPossible, this.colPossible);
+        console.log("rook");
+      }
+      //////// white bishop
+      if (this.type === "bishop") {
+        const bishop = new Bishop(
+          e.currentTarget.id,
+          "white",
+          this.rowPossible,
+          this.colPossible
+        );
+
+        bishop.getBishopMove(this.rowPossible, this.colPossible);
+        console.log("bishop");
+      }
+      ////////white knight
+      if (this.type === "knight") {
+        const knight = new Knight(
+          e.currentTarget.id,
+          "white",
+          this.rowPossible,
+          this.colPossible
+        );
+
+        knight.getKnightMove(this.rowPossible, this.colPossible);
+        console.log("knight");
+      }
+      // //////////////// white king
+      if (this.type === "king") {
+        const king = new King(
+          e.currentTarget.id,
+          "white",
+          this.rowPossible,
+          this.colPossible
+        );
+        king.getKingMove(this.rowPossible, this.colPossible);
+      } // //////////////// white queen
+      if (this.type === "queen") {
+        const queen = new Queen(
+          e.currentTarget.id,
+          "white",
+          this.rowPossible,
+          this.colPossible
+        );
+        // Object.assign(
+        //   queen,
+        //   new Bishop(e.currentTarget.id, this.rowPossible, this.colPossible)
+        // );
+
+        queen.getQueenMove(this.rowPossible, this.colPossible);
+        queen.getRookMove(this.rowPossible, this.colPossible);
+        // queen.getBishopMove(this.rowPossible, this.colPossible);
+        console.log("clicked");
+      }
+    };
+
+    // }
+  }
+
+  getBlackMoves() {
+    // const squares = document.querySelectorAll(".box");
 
     let pieceID = document.getElementById(this.id);
 
     pieceID.onclick = (e) => {
-      //fow white pawn
-      const currentPieceLocation = e.currentTarget.parentNode.id;
-      let rowPossible = parseInt(currentPieceLocation[1]); //get the id number of the possible move
-      let colPossible = currentPieceLocation[0]; //get the id letter of the possible move
-      if (e.currentTarget.className === "w-pawn") {
-        //filter the possible moves
-        Array.from(squares).filter((item) => {
-          const possibleMove = item.id.split("");
-          let col = possibleMove[0];
-          let row = parseInt(possibleMove[1]);
-          //apply opacity on 1st square
-          if (row === rowPossible + 1 && col === colPossible) {
-            item.style.opacity = "0.2";
-          }
-          //apply opacity on 2nd square
-          if (row === rowPossible + 2 && col === colPossible) {
-            item.style.opacity = "0.2";
-          }
-        });
+      // if (this.turn === "white") {
+
+      this.currentPieceLocation = e.currentTarget.parentNode.id;
+      console.log(this.currentPieceLocation);
+      this.rowPossible = parseInt(this.currentPieceLocation[1]); //get the id number of the possible move
+      console.log(this.rowPossible);
+      this.colPossible = this.currentPieceLocation[0]; //get the id letter of the possible move
+      console.log(this.colPossible);
+      // e.currentTarget.classList.remove("valid-move");
+      ////////////// //white pawn
+      if (this.type === "pawn") {
+        const whitePawn = new Pawn(
+          e.currentTarget.id,
+          "black",
+          this.rowPossible,
+          this.colPossible
+        );
+        whitePawn.getPawnMove(this.rowPossible, this.colPossible);
+        console.log("pawn");
       }
-      if (e.currentTarget.className === "w-rook") {
-        Array.from(squares).filter((item) => {
-          const possibleMove = item.id.split("");
-          let col = possibleMove[0];
-          let row = parseInt(possibleMove[1]);
-          //apply opacity on 1st square
-          for (let i = 1; i < 8; i++) {
-            if (
-              // item.hasChildNodes() === false &&
-              row === rowPossible + i &&
-              col === colPossible
-            ) {
-              item.style.opacity = "0.2";
-              console.log("roooookkkkk");
-            }
-          }
-        });
+      /////////////  white rook
+      if (this.type === "rook") {
+        const rook = new Rook(
+          e.currentTarget.id,
+          "black",
+          this.rowPossible,
+          this.colPossible
+        );
+        rook.getRookMove(this.rowPossible, this.colPossible);
+        console.log("rook");
+      }
+      //////// white bishop
+      if (this.type === "bishop") {
+        const bishop = new Bishop(
+          e.currentTarget.id,
+          "black",
+          this.rowPossible,
+          this.colPossible
+        );
+
+        bishop.getBishopMove(this.rowPossible, this.colPossible);
+        console.log("bishop");
+      }
+      ////////white knight
+      if (this.type === "knight") {
+        const knight = new Knight(
+          e.currentTarget.id,
+          "black",
+          this.rowPossible,
+          this.colPossible
+        );
+
+        knight.getKnightMove(this.rowPossible, this.colPossible);
+        console.log("knight");
+      }
+      // //////////////// white king
+      if (this.type === "king") {
+        const king = new King(
+          e.currentTarget.id,
+          "black",
+          this.rowPossible,
+          this.colPossible
+        );
+        king.getKingMove(this.rowPossible, this.colPossible);
+      } // //////////////// white queen
+      if (this.type === "queen") {
+        const queen = new Queen(
+          e.currentTarget.id,
+          "black",
+          this.rowPossible,
+          this.colPossible
+        );
+        // Object.assign(
+        //   queen,
+        //   new Bishop(e.currentTarget.id, this.rowPossible, this.colPossible)
+        // );
+
+        queen.getQueenMove(this.rowPossible, this.colPossible);
+        queen.getRookMove(this.rowPossible, this.colPossible);
+        // queen.getBishopMove(this.rowPossible, this.colPossible);
+        console.log("clicked");
       }
     };
+    // }
+  }
+}
+class Pawn {
+  constructor(id, color, row, col) {
+    this.id = id;
+    this.color = color;
+    this.row = row;
+    this.col = col;
+
+    // this.pieceID = pieceID;
+  }
+  // changeTurn() {
+  //   this.turn = this.turn === "black" ? "white" : "black";
+  // }
+  displayLegalMove(item, pieceID, pieceOldLoc) {
+    item.classList.toggle("valid-move");
+    item.onclick = () => {
+      // pieceID.parentNode.removeChild(pieceID);
+      Array.from(squares).forEach((square) => {
+        if (square.classList.contains("valid-move")) {
+          square.classList.remove("valid-move");
+          item.append(pieceID);
+          pieceOldLoc.innerHTML = "";
+          return;
+          // game.newGame();
+        }
+      });
+
+      game.changeTurn();
+      console.log(this.turn);
+    };
+  }
+  getPawnMove(row, col) {
+    let pieceID = document.getElementById(this.id);
+    let pieceOldLoc = pieceID.parentNode;
+
+    const squares = document.querySelectorAll(".box");
+
+    Array.from(squares).filter((item) => {
+      const possibleMove = item.id.split("");
+      let c = possibleMove[0];
+      let r = parseInt(possibleMove[1]);
+
+      let adjacentPiece;
+      if (this.color === "white") {
+        adjacentPiece = document.getElementById(col + (row + 1).toString());
+      } else if (this.color === "black") {
+        adjacentPiece = document.getElementById(col + (row - 1).toString());
+      }
+
+      // console.log("adjacentPiece", adjacentPiece);
+
+      if (!adjacentPiece.hasChildNodes()) {
+        for (let i = 1; i < 3; i++) {
+          if (
+            this.color === "white" &&
+            !item.hasChildNodes() &&
+            r === row + i &&
+            c === col
+          ) {
+            console.log(264);
+            this.displayLegalMove(item, pieceID, pieceOldLoc);
+            // break;
+          }
+
+          if (
+            this.color === "black" &&
+            !item.hasChildNodes() &&
+            r === row - i &&
+            c === col
+          ) {
+            console.log(275);
+            this.displayLegalMove(item, pieceID, pieceOldLoc);
+            // break;
+          }
+        }
+      }
+    });
+  }
+}
+class Rook extends Pawn {
+  constructor(id, color, row, col) {
+    super(id, color, row, col);
+  }
+
+  getRookMove(row, col) {
+    let pieceID = document.getElementById(this.id);
+    let pieceOldLoc = pieceID.parentNode;
+    const squares = document.querySelectorAll(".box");
+    Array.from(squares).filter((item) => {
+      const possibleMove = item.id.split("");
+      let c = possibleMove[0];
+      let r = parseInt(possibleMove[1]);
+
+      let adjacentPiece;
+      if (this.color === "white") {
+        adjacentPiece = document.getElementById(col + (row + 1).toString());
+      } else if (this.color === "black") {
+        adjacentPiece = document.getElementById(col + (row - 1).toString());
+      }
+
+      let colArray = ["A", "B", "C", "D", "E", "F", "G", "H"];
+      // let colMatch = colArray.filter((item) => {
+      //   if (col === item) {
+      //     return item;
+      //   }
+      // });
+      // let colIndex = colArray.indexOf(colMatch.toString());
+      // console.log(colIndex);
+      // let checkColArr = [];
+      // for (let j = colIndex - 1; j >= 0; j--) {
+      //   checkColArr.push(document.getElementById(`${colArray[j]}${row}`));
+      // }
+      // let k = 0;
+      // console.log(checkColArr[k].childElementCount);
+
+      // while (
+      //   checkColArr[k].innerHTML === "" ||
+      //   checkColArr[k].firstChild.color === "black"
+      // ) {
+      // console.log(checkColArr[k].childElementCount);
+      // checkColArr[k].classList.toggle("valid-move");
+      if (!adjacentPiece.hasChildNodes()) {
+        if (colArray.includes(c) && r === row && c !== col) {
+          // if (item.id !== currentPieceLocation) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
+          console.log("hello");
+        }
+        // k++;
+
+        for (let i = 1; i < 8; i++) {
+          if (!item.hasChildNodes() && r === row + i && c === col) {
+            this.displayLegalMove(item, pieceID, pieceOldLoc);
+          }
+          if (!item.hasChildNodes() && r === row - i && c === col) {
+            this.displayLegalMove(item, pieceID, pieceOldLoc);
+          }
+        }
+      }
+    });
+  }
+}
+class Bishop extends Pawn {
+  constructor(id, color, row, col) {
+    super(id, color, row, col);
+  }
+  getBishopMove(row, col) {
+    let alphaArray = ["A", "B", "C", "D", "E", "F", "G", "H"];
+    let alphaInvertedArray = ["H", "G", "F", "E", "D", "C", "B", "A"];
+    const pieceColRight = alphaArray.filter((item) => {
+      if (col === item) {
+        console.log(item);
+        return item;
+      }
+    });
+    const pieceColLeft = alphaInvertedArray.filter((item) => {
+      if (col === item) {
+        console.log(item);
+        return item;
+      }
+    });
+    const colIndexRight = alphaArray.indexOf(pieceColRight.toString());
+    const colIndexLeft = alphaInvertedArray.indexOf(pieceColLeft.toString());
+    let pieceID = document.getElementById(this.id);
+    let pieceOldLoc = pieceID.parentNode;
+    const squares = document.querySelectorAll(".box");
+    Array.from(squares).filter((item) => {
+      const possibleMove = item.id.split("");
+      let c = possibleMove[0];
+      let r = parseInt(possibleMove[1]);
+
+      let adjacentPiece = document.getElementById(col + (row + 1).toString());
+
+      // if (!adjacentPiece.hasChildNodes()) {
+
+      for (let i = 1; i < alphaArray.length; i++) {
+        if (c === alphaArray[colIndexRight + i] && r === row + i) {
+          // if (item.id !== currentPieceLocation) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
+        }
+        if (c === alphaArray[colIndexRight - i] && r === row - i) {
+          // if (item.id !== currentPieceLocation) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
+        }
+      }
+      for (let i = 1; i < alphaInvertedArray.length; i++) {
+        if (c === alphaInvertedArray[colIndexLeft + i] && r === row + i) {
+          // if (item.id !== currentPieceLocation) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
+        }
+        if (c === alphaInvertedArray[colIndexLeft - i] && r === row - i) {
+          // if (item.id !== currentPieceLocation) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
+        }
+      }
+    });
+  }
+}
+class Knight extends Pawn {
+  constructor(id, color, row, col) {
+    super(id, color, row, col);
+  }
+
+  getKnightMove(row, col) {
+    let pieceID = document.getElementById(this.id);
+    let pieceOldLoc = pieceID.parentNode;
+    let alphaArray = ["A", "B", "C", "D", "E", "F", "G", "H"];
+    const pieceCol = alphaArray.filter((item) => {
+      if (col === item) {
+        console.log(item);
+        return item;
+      }
+    });
+
+    const colIndex = alphaArray.indexOf(pieceCol.toString());
+
+    const squares = document.querySelectorAll(".box");
+    Array.from(squares).filter((item) => {
+      const possibleMove = item.id.split("");
+      let c = possibleMove[0];
+      let r = parseInt(possibleMove[1]);
+
+      let adjacentPiece = document.getElementById(col + (row + 1).toString());
+
+      if (
+        item.children.color !== "white" &&
+        r === row - 1 &&
+        c === alphaArray[colIndex - 2]
+      ) {
+        this.displayLegalMove(item, pieceID, pieceOldLoc);
+      }
+      if (r === row - 2 && c === alphaArray[colIndex - 1]) {
+        this.displayLegalMove(item, pieceID, pieceOldLoc);
+      }
+      if (r === row + 1 && c === alphaArray[colIndex + 2]) {
+        this.displayLegalMove(item, pieceID, pieceOldLoc);
+      }
+      if (r === row + 2 && c === alphaArray[colIndex + 1]) {
+        this.displayLegalMove(item, pieceID, pieceOldLoc);
+      }
+      if (r === row + 1 && c === alphaArray[colIndex - 2]) {
+        this.displayLegalMove(item, pieceID, pieceOldLoc);
+      }
+      if (r === row + 2 && c === alphaArray[colIndex - 1]) {
+        this.displayLegalMove(item, pieceID, pieceOldLoc);
+      }
+      if (r === row - 1 && c === alphaArray[colIndex + 2]) {
+        this.displayLegalMove(item, pieceID, pieceOldLoc);
+      }
+      if (r === row - 2 && c === alphaArray[colIndex + 1]) {
+        this.displayLegalMove(item, pieceID, pieceOldLoc);
+      }
+    });
+  }
+}
+class Queen extends Rook {
+  constructor(id, color, row, col) {
+    super(id, color, row, col);
+  }
+  getQueenMove(row, col) {
+    // super.getRookMove();
+    let alphaArray = ["A", "B", "C", "D", "E", "F", "G", "H"];
+    let alphaInvertedArray = ["H", "G", "F", "E", "D", "C", "B", "A"];
+    const pieceColRight = alphaArray.filter((item) => {
+      if (col === item) {
+        console.log(item);
+        return item;
+      }
+    });
+    const pieceColLeft = alphaInvertedArray.filter((item) => {
+      if (col === item) {
+        console.log(item);
+        return item;
+      }
+    });
+    const colIndexRight = alphaArray.indexOf(pieceColRight.toString());
+    const colIndexLeft = alphaInvertedArray.indexOf(pieceColLeft.toString());
+    let pieceID = document.getElementById(this.id);
+    let pieceOldLoc = pieceID.parentNode;
+    const squares = document.querySelectorAll(".box");
+    Array.from(squares).filter((item) => {
+      const possibleMove = item.id.split("");
+      let c = possibleMove[0];
+      let r = parseInt(possibleMove[1]);
+
+      let adjacentPiece = document.getElementById(col + (row + 1).toString());
+
+      // if (!adjacentPiece.hasChildNodes()) {
+
+      for (let i = 1; i < alphaArray.length; i++) {
+        if (
+          !item.hasChildNodes() &&
+          c === alphaArray[colIndexRight + i] &&
+          r === row + i
+        ) {
+          // if (item.id !== currentPieceLocation) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
+        }
+        if (
+          !item.hasChildNodes() &&
+          c === alphaArray[colIndexRight - i] &&
+          r === row - i
+        ) {
+          // if (item.id !== currentPieceLocation) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
+        }
+      }
+      for (let i = 1; i < alphaInvertedArray.length; i++) {
+        if (
+          !item.hasChildNodes() &&
+          c === alphaInvertedArray[colIndexLeft + i] &&
+          r === row + i
+        ) {
+          // if (item.id !== currentPieceLocation) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
+        }
+        if (
+          !item.hasChildNodes() &&
+          c === alphaInvertedArray[colIndexLeft - i] &&
+          r === row - i
+        ) {
+          // if (item.id !== currentPieceLocation) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
+        }
+      }
+    });
+  }
+}
+class King extends Pawn {
+  constructor(id, color, row, col) {
+    super(id, color, row, col);
+  }
+
+  getKingMove(row, col) {
+    let pieceID = document.getElementById(this.id);
+    let pieceOldLoc = pieceID.parentNode;
+    // let currentPieceLocation = e.currentTarget.parentNode.id;
+    let alphaArray = ["A", "B", "C", "D", "E", "F", "G", "H"];
+    const pieceCol = alphaArray.filter((item) => {
+      if (col === item) {
+        console.log(item);
+        return item;
+      }
+    });
+
+    const colIndex = alphaArray.indexOf(pieceCol.toString());
+
+    const squares = document.querySelectorAll(".box");
+    Array.from(squares).filter((item) => {
+      const possibleMove = item.id.split("");
+      let c = possibleMove[0];
+      let r = parseInt(possibleMove[1]);
+      //apply opacity on 1st square
+      let adjacentPiece = document.getElementById(col + (row + 1).toString());
+
+      // if (!adjacentPiece.hasChildNodes()) {
+
+      if (!item.hasChildNodes() && r === row + 1 && c === col) {
+        this.displayLegalMove(item, pieceID, pieceOldLoc);
+      }
+      if (!item.hasChildNodes() && r === row - 1 && c === col) {
+        this.displayLegalMove(item, pieceID, pieceOldLoc);
+      }
+      if (
+        !item.hasChildNodes() &&
+        r === row &&
+        c === alphaArray[colIndex + 1]
+      ) {
+        this.displayLegalMove(item, pieceID, pieceOldLoc);
+      }
+      if (
+        !item.hasChildNodes() &&
+        r === row &&
+        c === alphaArray[colIndex - 1]
+      ) {
+        this.displayLegalMove(item, pieceID, pieceOldLoc);
+      }
+      if (
+        !item.hasChildNodes() &&
+        c === alphaArray[colIndex + 1] &&
+        r === row + 1
+      ) {
+        this.displayLegalMove(item, pieceID, pieceOldLoc);
+      }
+      if (
+        !item.hasChildNodes() &&
+        c === alphaArray[colIndex + 1] &&
+        r === row - 1
+      ) {
+        this.displayLegalMove(item, pieceID, pieceOldLoc);
+      }
+      if (
+        !item.hasChildNodes() &&
+        c === alphaArray[colIndex - 1] &&
+        r === row + 1
+      ) {
+        this.displayLegalMove(item, pieceID, pieceOldLoc);
+      }
+      if (
+        !item.hasChildNodes() &&
+        c === alphaArray[colIndex - 1] &&
+        r === row - 1
+      ) {
+        this.displayLegalMove(item, pieceID, pieceOldLoc);
+      }
+    });
+  }
+}
+class Game {
+  constructor() {
+    // this.newGame(), this.initGame();
+  }
+  initGame() {
+    this.turn = "white";
+  }
+  changeTurn() {
+    this.turn = this.turn === "white" ? "black" : "white";
+    // console.log(this.turn);
+    console.log(this.turn);
+    console.log("changeTurn", this);
+    this.newGame();
+  }
+
+  newGame() {
+    console.log(this.turn);
+
+    if (this.turn === "black") {
+      const bp1 = new Move("bp1", "black", "pawn", this.turn);
+      const bp2 = new Move("bp2", "black", "pawn", this.turn);
+      const bp3 = new Move("bp3", "black", "pawn", this.turn);
+      const bp4 = new Move("bp4", "black", "pawn", this.turn);
+      const bp5 = new Move("bp5", "black", "pawn", this.turn);
+      const bp6 = new Move("bp6", "black", "pawn", this.turn);
+      const bp7 = new Move("bp7", "black", "pawn", this.turn);
+      const bp8 = new Move("bp8", "black", "pawn", this.turn);
+      const br1 = new Move("br1", "black", "rook", this.turn);
+      const br2 = new Move("br2", "black", "rook", this.turn);
+      const bb1 = new Move("bb1", "black", "bishop", this.turn);
+      const bb2 = new Move("bb2", "black", "bishop", this.turn);
+      const bn1 = new Move("bn1", "black", "knight", this.turn);
+      const bn2 = new Move("bn2", "black", "knight", this.turn);
+      const bk = new Move("bk", "black", "king", this.turn);
+      const bq = new Move("bq", "black", "queen", this.turn);
+
+      bp1.getBlackMoves();
+      bp2.getBlackMoves();
+      bp3.getBlackMoves();
+      bp4.getBlackMoves();
+      bp5.getBlackMoves();
+      bp6.getBlackMoves();
+      bp7.getBlackMoves();
+      bp8.getBlackMoves();
+      br1.getBlackMoves();
+      br2.getBlackMoves();
+      bb1.getBlackMoves();
+      bb2.getBlackMoves();
+      bn1.getBlackMoves();
+      bn2.getBlackMoves();
+      bk.getBlackMoves();
+      bq.getBlackMoves();
+    }
+    if (this.turn === "white") {
+      const wp1 = new Move("wp1", "white", "pawn", this.turn);
+      const wp2 = new Move("wp2", "white", "pawn", this.turn);
+      const wp3 = new Move("wp3", "white", "pawn", this.turn);
+      const wp4 = new Move("wp4", "white", "pawn", this.turn);
+      const wp5 = new Move("wp5", "white", "pawn", this.turn);
+      const wp6 = new Move("wp6", "white", "pawn", this.turn);
+      const wp7 = new Move("wp7", "white", "pawn", this.turn);
+      const wp8 = new Move("wp8", "white", "pawn", this.turn);
+      const wr1 = new Move("wr1", "white", "rook", this.turn);
+      const wr2 = new Move("wr2", "white", "rook", this.turn);
+      const wb1 = new Move("wb1", "white", "bishop", this.turn);
+      const wb2 = new Move("wb2", "white", "bishop", this.turn);
+      const wn1 = new Move("wn1", "white", "knight", this.turn);
+      const wn2 = new Move("wn2", "white", "knight", this.turn);
+      const wk = new Move("wk", "white", "king", this.turn);
+      const wq = new Move("wq", "white", "queen", this.turn);
+
+      wp1.getWhiteMoves();
+      wp2.getWhiteMoves();
+      wp3.getWhiteMoves();
+      wp4.getWhiteMoves();
+      wp5.getWhiteMoves();
+      wp6.getWhiteMoves();
+      wp7.getWhiteMoves();
+      wp8.getWhiteMoves();
+      wr1.getWhiteMoves();
+      wr2.getWhiteMoves();
+      wb1.getWhiteMoves();
+      wb2.getWhiteMoves();
+      wn1.getWhiteMoves();
+      wn2.getWhiteMoves();
+      wk.getWhiteMoves();
+      wq.getWhiteMoves();
+    }
   }
 }
 
-//Just to run the method. How do we make this new instance argument dynamic?
-const piece = new Move("wr1");
+const game = new Game();
 
-piece.getPossibleMove();
+game.initGame();
+game.newGame();
+
+// const p1 = new Piece("bp1");
+// const p2 = new Piece("bp2");
+// const p3 = new Piece("bp3");
+// const p4 = new Piece("bp4");
+// const p5 = new Piece("bp5");
+// const p6 = new Piece("bp6");
+// const p7 = new Piece("bp7");
+// const p8 = new Piece("bp8");
+// const r1 = new Piece("br1");
+// const r2 = new Piece("br2");
+// const bk = new Piece("bk");
+// const bq = new Piece("bq");
+
+// p1.getBlackPossibleMoves();
+// p2.getBlackPossibleMoves();
+// p3.getBlackPossibleMoves();
+// p4.getBlackPossibleMoves();
+// p5.getBlackPossibleMoves();
+// p6.getBlackPossibleMoves();
+// p7.getBlackPossibleMoves();
+// p8.getBlackPossibleMoves();
+// r1.getBlackPossibleMoves();
+// r2.getBlackPossibleMoves();
+// bk.getBlackPossibleMoves();
+// bq.getBlackPossibleMoves();
+
+// const wp1 = new Piece("wp1");
+// const wp2 = new Piece("wp2");
+// const wp3 = new Piece("wp3");
+// const wp4 = new Piece("wp4");
+// const wp5 = new Piece("wp5");
+// const wp6 = new Piece("wp6");
+// const wp7 = new Piece("wp7");
+// const wp8 = new Piece("wp8");
+// const wr1 = new Piece("wr1");
+// const wr2 = new Piece("wr2");
+// const wk = new Piece("wk");
+// const wq = new Piece("wq");
+
+// wp1.getWhitePossibleMoves();
+// wp2.getWhitePossibleMoves();
+// wp3.getWhitePossibleMoves();
+// wp4.getWhitePossibleMoves();
+// wp5.getWhitePossibleMoves();
+// wp6.getWhitePossibleMoves();
+// wp7.getWhitePossibleMoves();
+// wp8.getWhitePossibleMoves();
+// wr1.getWhitePossibleMoves();
+// wr2.getWhitePossibleMoves();
+// wk.getWhitePossibleMoves();
+// wq.getWhitePossibleMoves();
+//back-up
