@@ -1,8 +1,8 @@
 //to be deleted. Just to show the location of squares
 const squares = document.querySelectorAll(".box");
-Array.from(squares).forEach((item) => {
-  // item.innerHTML += `<span>${item.id}</span>`;
-});
+// Array.from(squares).forEach((item) => {
+//   // item.innerHTML += `<span>${item.id}</span>`;
+// });
 
 class Move {
   constructor(id, color, type, turn) {
@@ -20,12 +20,24 @@ class Move {
   // }
 
   getWhiteMoves() {
-    if (this.turn === "white") {
-      let pieceID = document.getElementById(this.id);
+    // if (this.turn === "white") {
+    let pieceID = document.getElementById(this.id);
+    // const squares = document.querySelectorAll(".box");
+    // let checkPendingTurn = Array.from(squares).some((square) => {
+    //   square.classList.contains("valid-move");
+    // });
+    // console.log(checkPendingTurn);
+    // if (checkPendingTurn) {
+    console.log("hello");
+    // }
+    pieceID.onclick = (e) => {
+      // if (this.turn === "white") {
+      const squares = document.querySelectorAll(".box");
+      let checkPendingTurn = Array.from(squares).some((square) => {
+        return square.classList.contains("valid-move");
+      });
 
-      pieceID.onclick = (e) => {
-        // if (this.turn === "white") {
-
+      if (!checkPendingTurn) {
         this.currentPieceLocation = e.currentTarget.parentNode.id;
         console.log(this.currentPieceLocation);
         this.rowPossible = parseInt(this.currentPieceLocation[1]); //get the id number of the possible move
@@ -106,99 +118,109 @@ class Move {
           // queen.getBishopMove(this.rowPossible, this.colPossible);
           console.log("clicked");
         }
-      };
-    }
+      }
+    };
+    // }
   }
 
   getBlackMoves() {
     // const squares = document.querySelectorAll(".box");
-    if (this.turn === "black") {
-      let pieceID = document.getElementById(this.id);
+    const squares = document.querySelectorAll(".box");
+    let checkPendingTurn = Array.from(squares).some((square) => {
+      return square.classList.contains("valid-move");
+    });
 
-      pieceID.onclick = (e) => {
-        // if (this.turn === "white") {
+    if (!checkPendingTurn) {
+      if (this.turn === "black") {
+        let pieceID = document.getElementById(this.id);
 
-        this.currentPieceLocation = e.currentTarget.parentNode.id;
-        console.log(this.currentPieceLocation);
-        this.rowPossible = parseInt(this.currentPieceLocation[1]); //get the id number of the possible move
-        console.log(this.rowPossible);
-        this.colPossible = this.currentPieceLocation[0]; //get the id letter of the possible move
-        console.log(this.colPossible);
-        // e.currentTarget.classList.remove("valid-move");
-        ////////////// //white pawn
-        if (this.type === "pawn") {
-          const whitePawn = new Pawn(
-            e.currentTarget.id,
-            "black",
-            this.rowPossible,
-            this.colPossible
-          );
-          whitePawn.getPawnMove(this.rowPossible, this.colPossible);
-          console.log("pawn");
-        }
-        /////////////  white rook
-        if (this.type === "rook") {
-          const rook = new Rook(
-            e.currentTarget.id,
-            "black",
-            this.rowPossible,
-            this.colPossible
-          );
-          rook.getRookMove(this.rowPossible, this.colPossible);
-          console.log("rook");
-        }
-        //////// white bishop
-        if (this.type === "bishop") {
-          const bishop = new Bishop(
-            e.currentTarget.id,
-            "black",
-            this.rowPossible,
-            this.colPossible
-          );
+        pieceID.onclick = (e) => {
+          // if (this.turn === "white") {
+          const squares = document.querySelectorAll(".box");
+          let checkPendingTurn = Array.from(squares).some((square) => {
+            return square.classList.contains("valid-move");
+          });
 
-          bishop.getBishopMove(this.rowPossible, this.colPossible);
-          console.log("bishop");
-        }
-        ////////white knight
-        if (this.type === "knight") {
-          const knight = new Knight(
-            e.currentTarget.id,
-            "black",
-            this.rowPossible,
-            this.colPossible
-          );
+          if (!checkPendingTurn) {
+            this.currentPieceLocation = e.currentTarget.parentNode.id;
+            console.log(this.currentPieceLocation);
+            this.rowPossible = parseInt(this.currentPieceLocation[1]); //get the id number of the possible move
+            console.log(this.rowPossible);
+            this.colPossible = this.currentPieceLocation[0]; //get the id letter of the possible move
+            console.log(this.colPossible);
+            // e.currentTarget.classList.remove("valid-move");
+            ////////////// //white pawn
+            if (this.type === "pawn") {
+              const whitePawn = new Pawn(
+                e.currentTarget.id,
+                "black",
+                this.rowPossible,
+                this.colPossible
+              );
+              whitePawn.getPawnMove(this.rowPossible, this.colPossible);
+              console.log("pawn");
+            }
+            /////////////  white rook
+            if (this.type === "rook") {
+              const rook = new Rook(
+                e.currentTarget.id,
+                "black",
+                this.rowPossible,
+                this.colPossible
+              );
+              rook.getRookMove(this.rowPossible, this.colPossible);
+              console.log("rook");
+            }
+            //////// white bishop
+            if (this.type === "bishop") {
+              const bishop = new Bishop(
+                e.currentTarget.id,
+                "black",
+                this.rowPossible,
+                this.colPossible
+              );
 
-          knight.getKnightMove(this.rowPossible, this.colPossible);
-          console.log("knight");
-        }
-        // //////////////// white king
-        if (this.type === "king") {
-          const king = new King(
-            e.currentTarget.id,
-            "black",
-            this.rowPossible,
-            this.colPossible
-          );
-          king.getKingMove(this.rowPossible, this.colPossible);
-        } // //////////////// white queen
-        if (this.type === "queen") {
-          const queen = new Queen(
-            e.currentTarget.id,
-            "black",
-            this.rowPossible,
-            this.colPossible
-          );
-          // Object.assign(
-          //   queen,
-          //   new Bishop(e.currentTarget.id, this.rowPossible, this.colPossible)
-          // );
+              bishop.getBishopMove(this.rowPossible, this.colPossible);
+              console.log("bishop");
+            }
+            ////////white knight
+            if (this.type === "knight") {
+              const knight = new Knight(
+                e.currentTarget.id,
+                "black",
+                this.rowPossible,
+                this.colPossible
+              );
 
-          queen.getQueenMove(this.rowPossible, this.colPossible);
-          queen.getRookMove(this.rowPossible, this.colPossible);
-          // queen.getBishopMove(this.rowPossible, this.colPossible);
-          console.log("clicked");
-        }
-      };
+              knight.getKnightMove(this.rowPossible, this.colPossible);
+              console.log("knight");
+            }
+            // //////////////// white king
+            if (this.type === "king") {
+              const king = new King(
+                e.currentTarget.id,
+                "black",
+                this.rowPossible,
+                this.colPossible
+              );
+              king.getKingMove(this.rowPossible, this.colPossible);
+            } // //////////////// white queen
+            if (this.type === "queen") {
+              const queen = new Queen(
+                e.currentTarget.id,
+                "black",
+                this.rowPossible,
+                this.colPossible
+              );
+
+              queen.getQueenMove(this.rowPossible, this.colPossible);
+              queen.getRookMove(this.rowPossible, this.colPossible);
+
+              console.log("clicked");
+            }
+          }
+        };
+      }
     }
   }
 }
