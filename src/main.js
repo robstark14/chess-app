@@ -20,107 +20,101 @@ class Move {
   // }
 
   getWhiteMoves() {
-    // if (this.turn === "white") {
     let pieceID = document.getElementById(this.id);
-    // const squares = document.querySelectorAll(".box");
-    // let checkPendingTurn = Array.from(squares).some((square) => {
-    //   square.classList.contains("valid-move");
-    // });
-    // console.log(checkPendingTurn);
-    // if (checkPendingTurn) {
+
     console.log("hello");
     // }
     pieceID.onclick = (e) => {
-      // if (this.turn === "white") {
-      const squares = document.querySelectorAll(".box");
-      let checkPendingTurn = Array.from(squares).some((square) => {
-        return square.classList.contains("valid-move");
-      });
+      if (this.turn === "white") {
+        const squares = document.querySelectorAll(".box");
+        let checkPendingTurn = Array.from(squares).some((square) =>
+          square.classList.contains("valid-move")
+        );
 
-      if (!checkPendingTurn) {
-        this.currentPieceLocation = e.currentTarget.parentNode.id;
-        console.log(this.currentPieceLocation);
-        this.rowPossible = parseInt(this.currentPieceLocation[1]); //get the id number of the possible move
-        console.log(this.rowPossible);
-        this.colPossible = this.currentPieceLocation[0]; //get the id letter of the possible move
-        console.log(this.colPossible);
-        // e.currentTarget.classList.remove("valid-move");
-        ////////////// //white pawn
-        if (this.type === "pawn") {
-          const whitePawn = new Pawn(
-            e.currentTarget.id,
-            "white",
-            this.rowPossible,
-            this.colPossible
-          );
-          whitePawn.getPawnMove(this.rowPossible, this.colPossible);
-          console.log("pawn");
-        }
-        /////////////  white rook
-        if (this.type === "rook") {
-          const rook = new Rook(
-            e.currentTarget.id,
-            "white",
-            this.rowPossible,
-            this.colPossible
-          );
-          rook.getRookMove(this.rowPossible, this.colPossible);
-          console.log("rook");
-        }
-        //////// white bishop
-        if (this.type === "bishop") {
-          const bishop = new Bishop(
-            e.currentTarget.id,
-            "white",
-            this.rowPossible,
-            this.colPossible
-          );
+        if (!checkPendingTurn) {
+          this.currentPieceLocation = e.currentTarget.parentNode.id;
+          console.log(this.currentPieceLocation);
+          this.rowPossible = parseInt(this.currentPieceLocation[1]); //get the id number of the possible move
+          console.log(this.rowPossible);
+          this.colPossible = this.currentPieceLocation[0]; //get the id letter of the possible move
+          console.log(this.colPossible);
 
-          bishop.getBishopMove(this.rowPossible, this.colPossible);
-          console.log("bishop");
-        }
-        ////////white knight
-        if (this.type === "knight") {
-          const knight = new Knight(
-            e.currentTarget.id,
-            "white",
-            this.rowPossible,
-            this.colPossible
-          );
+          ////////////// //white pawn
+          if (this.type === "pawn") {
+            const whitePawn = new Pawn(
+              e.currentTarget.id,
+              "white",
+              this.rowPossible,
+              this.colPossible
+            );
+            whitePawn.getPawnMove(this.rowPossible, this.colPossible);
+            console.log("pawn");
+          }
+          /////////////  white rook
+          if (this.type === "rook") {
+            const rook = new Rook(
+              e.currentTarget.id,
+              "white",
+              this.rowPossible,
+              this.colPossible
+            );
+            rook.getRookMove(this.rowPossible, this.colPossible);
+            console.log("rook");
+          }
+          //////// white bishop
+          if (this.type === "bishop") {
+            const bishop = new Bishop(
+              e.currentTarget.id,
+              "white",
+              this.rowPossible,
+              this.colPossible
+            );
 
-          knight.getKnightMove(this.rowPossible, this.colPossible);
-          console.log("knight");
-        }
-        // //////////////// white king
-        if (this.type === "king") {
-          const king = new King(
-            e.currentTarget.id,
-            "white",
-            this.rowPossible,
-            this.colPossible
-          );
-          king.getKingMove(this.rowPossible, this.colPossible);
-        } // //////////////// white queen
-        if (this.type === "queen") {
-          const queen = new Queen(
-            e.currentTarget.id,
-            "white",
-            this.rowPossible,
-            this.colPossible
-          );
-          // Object.assign(
-          //   queen,
-          //   new Bishop(e.currentTarget.id, this.rowPossible, this.colPossible)
-          // );
+            bishop.getBishopMove(this.rowPossible, this.colPossible);
+            console.log("bishop");
+          }
+          ////////white knight
+          if (this.type === "knight") {
+            const knight = new Knight(
+              e.currentTarget.id,
+              "white",
+              this.rowPossible,
+              this.colPossible
+            );
 
-          queen.getQueenMove(this.rowPossible, this.colPossible);
-          queen.getRookMove(this.rowPossible, this.colPossible);
-          // queen.getBishopMove(this.rowPossible, this.colPossible);
-          console.log("clicked");
+            knight.getKnightMove(this.rowPossible, this.colPossible);
+            console.log("knight");
+          }
+          // //////////////// white king
+          if (this.type === "king") {
+            const king = new King(
+              e.currentTarget.id,
+              "white",
+              this.rowPossible,
+              this.colPossible
+            );
+            king.getKingMove(this.rowPossible, this.colPossible);
+          } // //////////////// white queen
+          if (this.type === "queen") {
+            const queen = new Queen(
+              e.currentTarget.id,
+              "white",
+              this.rowPossible,
+              this.colPossible
+            );
+            // Object.assign(
+            //   queen,
+            //   new Bishop(e.currentTarget.id, this.rowPossible, this.colPossible)
+            // );
+
+            queen.getQueenMove(this.rowPossible, this.colPossible);
+            queen.getRookMove(this.rowPossible, this.colPossible);
+            // queen.getBishopMove(this.rowPossible, this.colPossible);
+            console.log("clicked");
+          }
         }
       }
     };
-    // }
   }
 
   getBlackMoves() {
@@ -131,15 +125,14 @@ class Move {
     });
 
     if (!checkPendingTurn) {
-      if (this.turn === "black") {
-        let pieceID = document.getElementById(this.id);
+      let pieceID = document.getElementById(this.id);
 
-        pieceID.onclick = (e) => {
-          // if (this.turn === "white") {
+      pieceID.onclick = (e) => {
+        if (this.turn === "black") {
           const squares = document.querySelectorAll(".box");
-          let checkPendingTurn = Array.from(squares).some((square) => {
-            return square.classList.contains("valid-move");
-          });
+          let checkPendingTurn = Array.from(squares).some((square) =>
+            square.classList.contains("valid-move")
+          );
 
           if (!checkPendingTurn) {
             this.currentPieceLocation = e.currentTarget.parentNode.id;
@@ -219,8 +212,8 @@ class Move {
               console.log("clicked");
             }
           }
-        };
-      }
+        }
+      };
     }
   }
 }
@@ -252,7 +245,8 @@ class Pawn {
       });
 
       game.changeTurn();
-      console.log(this.turn);
+
+      // console.log(this.turn);
     };
   }
   getPawnMove(row, col) {
@@ -276,27 +270,55 @@ class Pawn {
       // console.log("adjacentPiece", adjacentPiece);
 
       if (!adjacentPiece.hasChildNodes()) {
-        for (let i = 1; i < 3; i++) {
-          if (
-            this.color === "white" &&
-            !item.hasChildNodes() &&
-            r === row + i &&
-            c === col
-          ) {
-            console.log(264);
-            this.displayLegalMove(item, pieceID, pieceOldLoc);
-            // break;
-          }
+        if (!pieceID.classList.contains("done-first-move")) {
+          for (let i = 1; i < 3; i++) {
+            if (
+              this.color === "white" &&
+              !item.hasChildNodes() &&
+              r === row + i &&
+              c === col
+            ) {
+              console.log(264);
 
-          if (
-            this.color === "black" &&
-            !item.hasChildNodes() &&
-            r === row - i &&
-            c === col
-          ) {
-            console.log(275);
-            this.displayLegalMove(item, pieceID, pieceOldLoc);
-            // break;
+              this.displayLegalMove(item, pieceID, pieceOldLoc);
+              pieceID.classList.add("done-first-move");
+            }
+
+            if (
+              this.color === "black" &&
+              !item.hasChildNodes() &&
+              r === row - i &&
+              c === col
+            ) {
+              console.log(275);
+
+              this.displayLegalMove(item, pieceID, pieceOldLoc);
+              pieceID.classList.add("done-first-move");
+            }
+          }
+        } else {
+          for (let i = 1; i < 2; i++) {
+            if (
+              this.color === "white" &&
+              !item.hasChildNodes() &&
+              r === row + i &&
+              c === col
+            ) {
+              console.log(264);
+              this.displayLegalMove(item, pieceID, pieceOldLoc);
+              // break;
+            }
+
+            if (
+              this.color === "black" &&
+              !item.hasChildNodes() &&
+              r === row - i &&
+              c === col
+            ) {
+              console.log(275);
+              this.displayLegalMove(item, pieceID, pieceOldLoc);
+              // break;
+            }
           }
         }
       }
@@ -685,6 +707,7 @@ class Game {
       bn2.getBlackMoves();
       bk.getBlackMoves();
       bq.getBlackMoves();
+      this.turn = "white";
     }
     if (this.turn === "white") {
       const wp1 = new Move("wp1", "white", "pawn", "white");
@@ -720,6 +743,8 @@ class Game {
       wn2.getWhiteMoves();
       wk.getWhiteMoves();
       wq.getWhiteMoves();
+      this.turn = "black";
+      console.log(this.turn);
     }
   }
 }
