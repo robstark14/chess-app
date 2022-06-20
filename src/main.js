@@ -347,42 +347,40 @@ class Rook extends Pawn {
       }
 
       let colArray = ["A", "B", "C", "D", "E", "F", "G", "H"];
-      let colMatch = colArray.filter((item) => {
-        if (col === item) {
-          return item;
+      // let colMatch = colArray.filter((item) => {
+      //   if (col === item) {
+      //     return item;
+      //   }
+      // });
+      // let colIndex = colArray.indexOf(colMatch.toString());
+      // console.log(colIndex);
+      // let checkColArr = [];
+      // for (let j = colIndex - 1; j >= 0; j--) {
+      //   checkColArr.push(document.getElementById(`${colArray[j]}${row}`));
+      // }
+      // let k = 0;
+      // console.log(checkColArr[0]);
+
+      // while (
+      //   checkColArr[k].innerHTML === ""
+      //   // ||
+      //   // checkColArr[k].firstChild.color === "black"
+      // ) {
+      // console.log(checkColArr[k].childElementCount);
+      // checkColArr[k].classList.toggle("valid-move");
+      if (!item.hasChildNodes()) {
+        if (colArray.includes(c) && r === row && c !== col) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
+          console.log("hello");
+
+          // k++;
         }
-      });
-      let colIndex = colArray.indexOf(colMatch.toString());
-      console.log(colIndex);
-      let checkColArr = [];
-      for (let j = colIndex - 1; j >= 0; j--) {
-        checkColArr.push(document.getElementById(`${colArray[j]}${row}`));
-      }
-      let k = 0;
-      console.log(checkColArr[k].childElementCount);
-
-      while (
-        checkColArr[k].innerHTML === ""
-        // ||
-        // checkColArr[k].firstChild.color === "black"
-      ) {
-        console.log(checkColArr[k].childElementCount);
-        checkColArr[k].classList.toggle("valid-move");
-        if (!adjacentPiece.hasChildNodes()) {
-          if (colArray.includes(c) && r === row && c !== col) {
-            // if (item.id !== currentPieceLocation) {
+        for (let i = 1; i < 8; i++) {
+          if (!item.hasChildNodes() && r === row + i && c === col) {
             this.displayLegalMove(item, pieceID, pieceOldLoc);
-            console.log("hello");
           }
-          k++;
-
-          for (let i = 1; i < 8; i++) {
-            if (!item.hasChildNodes() && r === row + i && c === col) {
-              this.displayLegalMove(item, pieceID, pieceOldLoc);
-            }
-            if (!item.hasChildNodes() && r === row - i && c === col) {
-              this.displayLegalMove(item, pieceID, pieceOldLoc);
-            }
+          if (!item.hasChildNodes() && r === row - i && c === col) {
+            this.displayLegalMove(item, pieceID, pieceOldLoc);
           }
         }
       }
@@ -470,33 +468,79 @@ class Knight extends Pawn {
       let r = parseInt(possibleMove[1]);
 
       let adjacentPiece = document.getElementById(col + (row + 1).toString());
+      // console.log(item.childNodes[1].className);
+      // let tileChild = () => {
+      //   if (item.innerHTML !== "") {
+      //     return item.childNodes[1].id;
+      //   }
+      // };
+      // let childArr = [];
+      let tileChild = () => {
+        if (item.hasChildNodes()) {
+          return item.childNodes[1];
+        } else {
+          return item;
+        }
+      };
+      const child = tileChild();
+      // childArr.push(child);
+      // console.log(childArr);
+      console.log(child.classList.contains("white"));
 
       if (
-        item.children.color !== "white" &&
+        !child.classList.contains("white") &&
         r === row - 1 &&
         c === alphaArray[colIndex - 2]
       ) {
         this.displayLegalMove(item, pieceID, pieceOldLoc);
       }
-      if (r === row - 2 && c === alphaArray[colIndex - 1]) {
+      if (
+        !child.classList.contains("white") &&
+        r === row - 2 &&
+        c === alphaArray[colIndex - 1]
+      ) {
         this.displayLegalMove(item, pieceID, pieceOldLoc);
       }
-      if (r === row + 1 && c === alphaArray[colIndex + 2]) {
+      if (
+        !child.classList.contains("white") &&
+        r === row + 1 &&
+        c === alphaArray[colIndex + 2]
+      ) {
         this.displayLegalMove(item, pieceID, pieceOldLoc);
       }
-      if (r === row + 2 && c === alphaArray[colIndex + 1]) {
+      if (
+        !child.classList.contains("white") &&
+        r === row + 2 &&
+        c === alphaArray[colIndex + 1]
+      ) {
         this.displayLegalMove(item, pieceID, pieceOldLoc);
       }
-      if (r === row + 1 && c === alphaArray[colIndex - 2]) {
+      if (
+        !child.classList.contains("white") &&
+        r === row + 1 &&
+        c === alphaArray[colIndex - 2]
+      ) {
         this.displayLegalMove(item, pieceID, pieceOldLoc);
       }
-      if (r === row + 2 && c === alphaArray[colIndex - 1]) {
+      if (
+        !child.classList.contains("white") &&
+        r === row + 2 &&
+        c === alphaArray[colIndex - 1]
+      ) {
         this.displayLegalMove(item, pieceID, pieceOldLoc);
       }
-      if (r === row - 1 && c === alphaArray[colIndex + 2]) {
+      if (
+        !child.classList.contains("white") &&
+        r === row - 1 &&
+        c === alphaArray[colIndex + 2]
+      ) {
         this.displayLegalMove(item, pieceID, pieceOldLoc);
       }
-      if (r === row - 2 && c === alphaArray[colIndex + 1]) {
+      if (
+        !child.classList.contains("white") &&
+        r === row - 2 &&
+        c === alphaArray[colIndex + 1]
+      ) {
         this.displayLegalMove(item, pieceID, pieceOldLoc);
       }
     });
