@@ -49,6 +49,7 @@ class Move {
             );
             whitePawn.getPawnMove(this.rowPossible, this.colPossible);
             console.log("pawn");
+            // game.changeTurn();
           }
           /////////////  white rook
           if (this.type === "rook") {
@@ -60,6 +61,7 @@ class Move {
             );
             rook.getRookMove(this.rowPossible, this.colPossible);
             console.log("rook");
+            // game.changeTurn();
           }
           //////// white bishop
           if (this.type === "bishop") {
@@ -72,6 +74,7 @@ class Move {
 
             bishop.getBishopMove(this.rowPossible, this.colPossible);
             console.log("bishop");
+            // game.changeTurn();
           }
           ////////white knight
           if (this.type === "knight") {
@@ -84,6 +87,7 @@ class Move {
 
             knight.getKnightMove(this.rowPossible, this.colPossible);
             console.log("knight");
+            // game.changeTurn();
           }
           // //////////////// white king
           if (this.type === "king") {
@@ -94,6 +98,7 @@ class Move {
               this.colPossible
             );
             king.getKingMove(this.rowPossible, this.colPossible);
+            // game.changeTurn();
           } // //////////////// white queen
           if (this.type === "queen") {
             const queen = new Queen(
@@ -111,6 +116,7 @@ class Move {
             queen.getRookMove(this.rowPossible, this.colPossible);
             // queen.getBishopMove(this.rowPossible, this.colPossible);
             console.log("clicked");
+            // game.changeTurn();
           }
         }
       }
@@ -152,6 +158,7 @@ class Move {
               );
               whitePawn.getPawnMove(this.rowPossible, this.colPossible);
               console.log("pawn");
+              this.turn === "white";
             }
             /////////////  white rook
             if (this.type === "rook") {
@@ -175,6 +182,7 @@ class Move {
 
               bishop.getBishopMove(this.rowPossible, this.colPossible);
               console.log("bishop");
+              this.turn === "white";
             }
             ////////white knight
             if (this.type === "knight") {
@@ -187,6 +195,7 @@ class Move {
 
               knight.getKnightMove(this.rowPossible, this.colPossible);
               console.log("knight");
+              this.turn === "white";
             }
             // //////////////// white king
             if (this.type === "king") {
@@ -197,6 +206,7 @@ class Move {
                 this.colPossible
               );
               king.getKingMove(this.rowPossible, this.colPossible);
+              this.turn === "white";
             } // //////////////// white queen
             if (this.type === "queen") {
               const queen = new Queen(
@@ -210,6 +220,7 @@ class Move {
               queen.getRookMove(this.rowPossible, this.colPossible);
 
               console.log("clicked");
+              this.turn === "white";
             }
           }
         }
@@ -236,6 +247,7 @@ class Pawn {
       Array.from(squares).forEach((square) => {
         if (square.classList.contains("valid-move")) {
           square.classList.remove("valid-move");
+          item.innerHTML = "";
           pieceOldLoc.innerHTML = "";
           item.append(pieceID);
           square.onclick = "";
@@ -252,6 +264,16 @@ class Pawn {
   getPawnMove(row, col) {
     let pieceID = document.getElementById(this.id);
     let pieceOldLoc = pieceID.parentNode;
+    let alphaArray = ["A", "B", "C", "D", "E", "F", "G", "H"];
+
+    const pieceCol = alphaArray.filter((item) => {
+      if (col === item) {
+        console.log(item);
+        return item;
+      }
+    });
+
+    const colIndex = alphaArray.indexOf(pieceCol.toString());
 
     const squares = document.querySelectorAll(".box");
 
@@ -267,17 +289,12 @@ class Pawn {
         adjacentPiece = document.getElementById(col + (row - 1).toString());
       }
 
-      // console.log("adjacentPiece", adjacentPiece);
+      let validCapture = document.getElementById(c + r);
 
       if (!adjacentPiece.hasChildNodes()) {
         if (!pieceID.classList.contains("done-first-move")) {
           for (let i = 1; i < 3; i++) {
-            if (
-              this.color === "white" &&
-              !item.hasChildNodes() &&
-              r === row + i &&
-              c === col
-            ) {
+            if (this.color === "white" && r === row + i && c === col) {
               console.log(264);
 
               this.displayLegalMove(item, pieceID, pieceOldLoc);
@@ -286,7 +303,7 @@ class Pawn {
 
             if (
               this.color === "black" &&
-              !item.hasChildNodes() &&
+              // !child.classList.contains("white") &&
               r === row - i &&
               c === col
             ) {
@@ -298,20 +315,14 @@ class Pawn {
           }
         } else {
           for (let i = 1; i < 2; i++) {
-            if (
-              this.color === "white" &&
-              !item.hasChildNodes() &&
-              r === row + i &&
-              c === col
-            ) {
+            if (this.color === "white" && r === row + i && c === col) {
               console.log(264);
               this.displayLegalMove(item, pieceID, pieceOldLoc);
-              // break;
+              // console.log(document.getElementById(c + r).childNodes);
             }
-
             if (
               this.color === "black" &&
-              !item.hasChildNodes() &&
+              // !child.classList.contains("white") &&
               r === row - i &&
               c === col
             ) {
@@ -320,6 +331,35 @@ class Pawn {
               // break;
             }
           }
+        }
+      }
+
+      if (
+        c ===
+          alphaArray[this.color === "white" ? colIndex + 1 : colIndex - 1] &&
+        r === (this.color === "white" ? row + 1 : row - 1)
+      ) {
+        if (
+          item.hasChildNodes() &&
+          validCapture.childNodes[1].classList.contains(
+            `${this.color === "white" ? "black" : "white"}`
+          )
+        ) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
+        }
+      }
+      if (
+        c ===
+          alphaArray[this.color === "white" ? colIndex - 1 : colIndex + 1] &&
+        r === (this.color === "white" ? row + 1 : row - 1)
+      ) {
+        if (
+          item.hasChildNodes() &&
+          validCapture.childNodes[1].classList.contains(
+            `${this.color === "white" ? "black" : "white"}`
+          )
+        ) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
         }
       }
     });
@@ -468,80 +508,111 @@ class Knight extends Pawn {
       let r = parseInt(possibleMove[1]);
 
       let adjacentPiece = document.getElementById(col + (row + 1).toString());
-      // console.log(item.childNodes[1].className);
-      // let tileChild = () => {
-      //   if (item.innerHTML !== "") {
-      //     return item.childNodes[1].id;
-      //   }
-      // };
-      // let childArr = [];
-      let tileChild = () => {
-        if (item.hasChildNodes()) {
-          return item.childNodes[1];
-        } else {
-          return item;
-        }
-      };
-      const child = tileChild();
-      // childArr.push(child);
-      // console.log(childArr);
-      console.log(child.classList.contains("white"));
 
-      if (
-        !child.classList.contains("white") &&
-        r === row - 1 &&
-        c === alphaArray[colIndex - 2]
-      ) {
-        this.displayLegalMove(item, pieceID, pieceOldLoc);
+      let validSquare = document.getElementById(c + r);
+      if (r === row - 1 && c === alphaArray[colIndex - 2]) {
+        if (
+          validSquare.hasChildNodes() &&
+          validSquare.childNodes[1].classList.contains(
+            `${this.color === "white" ? "black" : "white"}`
+          )
+        ) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
+        }
+        if (!validSquare.hasChildNodes()) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
+        }
       }
-      if (
-        !child.classList.contains("white") &&
-        r === row - 2 &&
-        c === alphaArray[colIndex - 1]
-      ) {
-        this.displayLegalMove(item, pieceID, pieceOldLoc);
+      if (r === row - 2 && c === alphaArray[colIndex - 1]) {
+        if (
+          validSquare.hasChildNodes() &&
+          validSquare.childNodes[1].classList.contains(
+            `${this.color === "white" ? "black" : "white"}`
+          )
+        ) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
+        }
+        if (!validSquare.hasChildNodes()) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
+        }
       }
-      if (
-        !child.classList.contains("white") &&
-        r === row + 1 &&
-        c === alphaArray[colIndex + 2]
-      ) {
-        this.displayLegalMove(item, pieceID, pieceOldLoc);
+      if (r === row + 1 && c === alphaArray[colIndex + 2]) {
+        if (
+          validSquare.hasChildNodes() &&
+          validSquare.childNodes[1].classList.contains(
+            `${this.color === "white" ? "black" : "white"}`
+          )
+        ) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
+        }
+        if (!validSquare.hasChildNodes()) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
+        }
       }
-      if (
-        !child.classList.contains("white") &&
-        r === row + 2 &&
-        c === alphaArray[colIndex + 1]
-      ) {
-        this.displayLegalMove(item, pieceID, pieceOldLoc);
+      if (r === row + 2 && c === alphaArray[colIndex + 1]) {
+        if (
+          validSquare.hasChildNodes() &&
+          validSquare.childNodes[1].classList.contains(
+            `${this.color === "white" ? "black" : "white"}`
+          )
+        ) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
+        }
+        if (!validSquare.hasChildNodes()) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
+        }
       }
-      if (
-        !child.classList.contains("white") &&
-        r === row + 1 &&
-        c === alphaArray[colIndex - 2]
-      ) {
-        this.displayLegalMove(item, pieceID, pieceOldLoc);
+      if (r === row + 1 && c === alphaArray[colIndex - 2]) {
+        if (
+          validSquare.hasChildNodes() &&
+          validSquare.childNodes[1].classList.contains(
+            `${this.color === "white" ? "black" : "white"}`
+          )
+        ) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
+        }
+        if (!validSquare.hasChildNodes()) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
+        }
       }
-      if (
-        !child.classList.contains("white") &&
-        r === row + 2 &&
-        c === alphaArray[colIndex - 1]
-      ) {
-        this.displayLegalMove(item, pieceID, pieceOldLoc);
+      if (r === row + 2 && c === alphaArray[colIndex - 1]) {
+        if (
+          validSquare.hasChildNodes() &&
+          validSquare.childNodes[1].classList.contains(
+            `${this.color === "white" ? "black" : "white"}`
+          )
+        ) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
+        }
+        if (!validSquare.hasChildNodes()) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
+        }
       }
-      if (
-        !child.classList.contains("white") &&
-        r === row - 1 &&
-        c === alphaArray[colIndex + 2]
-      ) {
-        this.displayLegalMove(item, pieceID, pieceOldLoc);
+      if (r === row - 1 && c === alphaArray[colIndex + 2]) {
+        if (
+          validSquare.hasChildNodes() &&
+          validSquare.childNodes[1].classList.contains(
+            `${this.color === "white" ? "black" : "white"}`
+          )
+        ) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
+        }
+        if (!validSquare.hasChildNodes()) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
+        }
       }
-      if (
-        !child.classList.contains("white") &&
-        r === row - 2 &&
-        c === alphaArray[colIndex + 1]
-      ) {
-        this.displayLegalMove(item, pieceID, pieceOldLoc);
+      if (r === row - 2 && c === alphaArray[colIndex + 1]) {
+        if (
+          validSquare.hasChildNodes() &&
+          validSquare.childNodes[1].classList.contains(
+            `${this.color === "white" ? "black" : "white"}`
+          )
+        ) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
+        }
+        if (!validSquare.hasChildNodes()) {
+          this.displayLegalMove(item, pieceID, pieceOldLoc);
+        }
       }
     });
   }
@@ -702,6 +773,7 @@ class King extends Pawn {
 class Game {
   constructor() {
     // this.newGame(), this.initGame();
+    this.turn;
   }
   initGame() {
     this.turn = "white";
@@ -710,7 +782,7 @@ class Game {
     this.turn = this.turn === "white" ? "black" : "white";
     // console.log(this.turn);
     console.log(this.turn);
-    console.log("changeTurn", this);
+    console.log(this);
     this.newGame();
   }
 
@@ -751,7 +823,7 @@ class Game {
       bn2.getBlackMoves();
       bk.getBlackMoves();
       bq.getBlackMoves();
-      this.turn = "white";
+      // this.turn = "white";
     }
     if (this.turn === "white") {
       const wp1 = new Move("wp1", "white", "pawn", "white");
@@ -787,7 +859,7 @@ class Game {
       wn2.getWhiteMoves();
       wk.getWhiteMoves();
       wq.getWhiteMoves();
-      this.turn = "black";
+      // this.turn = "black";
       console.log(this.turn);
     }
   }
